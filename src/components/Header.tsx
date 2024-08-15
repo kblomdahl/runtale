@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import logoUrl from '../assets/logo.svg';
 
 function Header() {
@@ -5,9 +6,9 @@ function Header() {
     <img src={logoUrl} height="36" alt="logo" />
     <nav>
       <ul>
-        <li><a href="/">Paces</a></li>
-        <li><a href="/zones">Zones</a></li>
-        <li><a href="/strength">Strength</a></li>
+        <li><Link to="/">Paces</Link></li>
+        <li><Link to="/zones">Zones</Link></li>
+        <li><Link to="/strength">Strength</Link></li>
       </ul>
     </nav>
   </header>;
