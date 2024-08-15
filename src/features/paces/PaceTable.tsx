@@ -39,13 +39,15 @@ function PaceTable() {
   const [customPaces, setCustomPaces] = useState(new Set());
   const addPace = (e: FormEvent<HTMLFormElement>) => {
     const form = e.target as HTMLFormElement;
-    const newPace = parsePace(form?.pace?.valueAsNumber);
+    const newPace = parsePace((form.pace as HTMLInputElement).valueAsNumber);
     const newPaces = [...new Set([...paces, newPace])];
 
     newPaces.sort((a, b) => b - a);
     setPaces(newPaces);
     setCustomPaces(new Set([...customPaces, newPace]));
     e.preventDefault();
+
+    return true;
   };
 
   return <>

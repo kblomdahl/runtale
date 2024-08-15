@@ -1,6 +1,14 @@
 module.exports = {
   root: true,
   env: { browser: true, es2020: true },
+  settings: {
+    react: {
+      version: 'detect',
+    }
+  },
+  parserOptions: {
+    project: ['./tsconfig.app.json', './tsconfig.node.json'],
+  },
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/strict-type-checked',
