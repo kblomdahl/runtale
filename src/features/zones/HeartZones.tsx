@@ -64,12 +64,14 @@ function HeartZones() {
   const [zones, setZones] = useState(calculateZones(DEFAULT_RESTING, DEFAULT_MAXIMUM, DEFAULT_LACTATE_THRESHOLD));
   const updateZoneValues = (e: FormEvent<HTMLFormElement>) => {
     const form = e.target as HTMLFormElement;
-    const resting = form?.resting?.valueAsNumber;
-    const maximum = form?.maximum?.valueAsNumber;
-    const lactateThreshold = form?.lactateThreshold?.valueAsNumber;
+    const resting = (form.resting as HTMLInputElement).valueAsNumber;
+    const maximum = (form.maximum as HTMLInputElement).valueAsNumber;
+    const lactateThreshold = (form.lactateThreshold as HTMLInputElement).valueAsNumber;
 
     setZones(calculateZones(resting, maximum, lactateThreshold));
     e.preventDefault();
+
+    return true;
   };
 
   return <>

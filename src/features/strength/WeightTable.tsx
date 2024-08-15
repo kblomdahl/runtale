@@ -80,7 +80,7 @@ function WeightTableBody({ oneRepMax }: WeightTableBodyProps) {
         const pct = array[index + reserve]?.pct;
 
         return <Fragment key={rpe}>
-          <td className="-fade">{pct && `${Math.round(pct * 100)}%`}</td>
+          <td className="-fade">{pct && `${Math.round(pct * 100).toString()}%`}</td>
           <td>{pct && Math.round(oneRepMax * pct)}</td>
         </Fragment>;
       })}
@@ -92,12 +92,14 @@ function WeightTable() {
   const [oneRepMax, setOneRepMax] = useState(calculateOneRepMax(DEFAULT_WEIGHT, DEFAULT_REPS, DEFAULT_RPE));
   const updateRepRPEValues = (e: FormEvent<HTMLFormElement>) => {
     const form = e.target as HTMLFormElement;
-    const weight = form?.weight?.valueAsNumber;
-    const reps = form?.reps?.valueAsNumber;
-    const rpe = form?.rpe?.valueAsNumber;
+    const weight = (form.weight as HTMLInputElement).valueAsNumber;
+    const reps = (form.reps as HTMLInputElement).valueAsNumber;
+    const rpe = (form.rpe as HTMLInputElement).valueAsNumber;
 
     setOneRepMax(calculateOneRepMax(weight, reps, rpe));
     e.preventDefault();
+
+    return true;
   };
 
   return <>
