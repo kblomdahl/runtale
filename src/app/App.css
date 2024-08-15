@@ -1,0 +1,101 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 1em;
+  background-color: #333;
+  border-bottom: #555 1px solid
+}
+
+header nav ul {
+  display: flex;
+  list-style: none;
+  gap: 2em;
+  margin: 0;
+}
+
+form, p, table {
+  margin: 1em 1em;
+}
+
+form.-single input {
+  margin: 0 0.5em;
+}
+
+form.-single button {
+  height: 24px;
+}
+
+form.-multiple {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  width: 360px;
+}
+
+form.-multiple label {
+  display: flex;
+  justify-content: space-between;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  text-align: right;
+  width: 8em;
+}
+
+td {
+  text-align: right;
+}
+
+td.-fade {
+  opacity: 50%;
+}
+
+tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+@keyframes flash {
+  0%   { background-color: unset; }
+  25%  { background-color: rgba(255, 255, 255, 0.05); }
+  100% { background-color: unset; }
+}
+
+tbody tr.-highlight {
+  font-weight: bold;
+  animation: flash 3s ease-out;
+}
+
+tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+hr {
+  margin: 2em 0;
+  border: dashed 1px rgba(255, 255, 255, 0.20);
+}
