@@ -8,6 +8,7 @@ function Header() {
       <ul>
         <li><Link to="/">Paces</Link></li>
         <li><Link to="/zones">Zones</Link></li>
+        <li><Link to="/sessions">Sessions</Link></li>
         <li><Link to="/strength">Strength</Link></li>
       </ul>
     </nav>

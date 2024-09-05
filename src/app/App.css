@@ -68,8 +68,22 @@ th {
   width: 8em;
 }
 
+th.-left {
+  text-align: left;
+  padding-left: 1em;
+}
+
+th.-wide {
+  width: 24em;
+}
+
 td {
   text-align: right;
+}
+
+td.-left {
+  text-align: left;
+  padding-left: 1em;
 }
 
 td.-fade {
