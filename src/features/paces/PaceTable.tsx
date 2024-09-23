@@ -6,6 +6,7 @@ const DEFAULT_PACES = Array.from({ length: 10 }, (_, i) => 390 - i * 10)
 const DISTANCE_1_MILE_KM = 1.60934;
 const DISTANCE_5_KM = 5.0;
 const DISTANCE_10_KM = 10.0;
+const DISTANCE_30_KM = 30.0;
 const DISTANCE_HALF_MARATHON_KM = 21.0975;
 const DISTANCE_MARATHON_KM = 42.195;
 const NUMBER_FORMAT = new Intl.NumberFormat(undefined, {
@@ -69,6 +70,7 @@ function PaceTable() {
           <th>5 kilometers</th>
           <th>10 kilometers</th>
           <th>Half Marathon</th>
+          <th>30 kilometers</th>
           <th>Marathon</th>
         </tr>
       </thead>
@@ -81,6 +83,7 @@ function PaceTable() {
               <td>{formatSeconds(pace * DISTANCE_5_KM)}</td>
               <td>{formatSeconds(pace * DISTANCE_10_KM)}</td>
               <td>{formatSeconds(pace * DISTANCE_HALF_MARATHON_KM)}</td>
+              <td>{formatSeconds(pace * DISTANCE_30_KM)}</td>
               <td>{formatSeconds(pace * DISTANCE_MARATHON_KM)}</td>
             </tr>;
           })
