@@ -9,6 +9,7 @@ const DISTANCE_10_KM = 10.0;
 const DISTANCE_30_KM = 30.0;
 const DISTANCE_HALF_MARATHON_KM = 21.0975;
 const DISTANCE_MARATHON_KM = 42.195;
+const SECONDS_PER_HOUR = 3600.0;
 const NUMBER_FORMAT = new Intl.NumberFormat(undefined, {
   minimumIntegerDigits: 2,
   maximumFractionDigits: 0
@@ -33,6 +34,10 @@ function parsePace(hhmm: number) {
   const minutes = (hhmm % MILLISECONDS_PER_HOUR) * (60 / MILLISECONDS_PER_HOUR);
 
   return 60 * hours + minutes;
+}
+
+function formatDecimals(x: number) {
+  return x.toFixed(1);
 }
 
 function PaceTable() {
@@ -66,6 +71,7 @@ function PaceTable() {
       <thead>
         <tr>
           <th>Pace (min/km)</th>
+          <th>Pace (km/h)</th>
           <th>1 mile</th>
           <th>5 kilometers</th>
           <th>10 kilometers</th>
@@ -79,6 +85,7 @@ function PaceTable() {
           paces.map(pace => {
             return <tr key={pace} className={customPaces.has(pace) ? '-highlight' : ''}>
               <td>{formatSeconds(pace)}</td>
+              <td>{formatDecimals(SECONDS_PER_HOUR / pace)}</td>
               <td>{formatSeconds(pace * DISTANCE_1_MILE_KM)}</td>
               <td>{formatSeconds(pace * DISTANCE_5_KM)}</td>
               <td>{formatSeconds(pace * DISTANCE_10_KM)}</td>
