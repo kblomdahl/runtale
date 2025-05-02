@@ -86,6 +86,14 @@ td.-left {
   padding-left: 1em;
 }
 
+td.-center {
+  text-align: center;
+}
+
+td.-bold {
+  font-weight: bold;
+}
+
 td.-fade {
   opacity: 50%;
 }
