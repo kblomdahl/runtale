@@ -25,7 +25,7 @@ const DISTRIBUTIONS = [
   }
 ];
 
-function TID() {
+function TrainingIntensityDistributions() {
   return <>
     <p>
       This table shows a few common training intensity distributions (TID) for endurance training. The percentages are the proportion of heart rate time in zone (HR TIZ).
@@ -55,4 +55,4 @@ function TID() {
   </>;
 }
 
-export default TID;
+export default TrainingIntensityDistributions;
