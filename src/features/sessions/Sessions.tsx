@@ -1,11 +1,11 @@
 import SessionRPENumber from './SessionRPENumber';
-import TID from './TID';
+import TrainingIntensityDistributions from './TrainingIntensityDistributions';
 
 function Sessions() {
   return <>
     <SessionRPENumber />
     <hr />
-    <TID />
+    <TrainingIntensityDistributions />
   </>;
 }
 
