@@ -19,7 +19,7 @@ function calculateZones(resting: number, maximum: number) {
     calculateReserve(resting, maximum),
   ].map(({ name, vt_1, vt_2 }) => {
     return {
-      namn: name,
+      name: name,
       low_aerobic: {
         lower: resting,
         upper: vt_1
@@ -54,7 +54,7 @@ function LactateZones({ resting, maximum }: LactateZonesProps) {
       <thead>
         <tr>
           <th>Zone</th>
-          {zones.map(zone => <th key={zone.namn}>{zone.namn}</th>)}
+          {zones.map(zone => <th key={zone.name}>{zone.name}</th>)}
           <th>LTHR%</th>
           <th>Lactate (mM)</th>
         </tr>
@@ -62,19 +62,19 @@ function LactateZones({ resting, maximum }: LactateZonesProps) {
       <tbody>
         <tr>
           <td>(Low Aerobic) 1</td>
-          {zones.map(zone => <td key={zone.namn}>{zone.low_aerobic.lower.toFixed(0)} - {zone.low_aerobic.upper.toFixed(0)}</td>)}
+          {zones.map(zone => <td key={zone.name}>{zone.low_aerobic.lower.toFixed(0)} - {zone.low_aerobic.upper.toFixed(0)}</td>)}
           <td>x &le; LT₁</td>
           <td>x &le; 2.0</td>
         </tr>
         <tr>
           <td>(High Aerobic) 2</td>
-          {zones.map(zone => <td key={zone.namn}>{zone.high_aerobic.lower.toFixed(0)} - {zone.high_aerobic.upper.toFixed(0)}</td>)}
+          {zones.map(zone => <td key={zone.name}>{zone.high_aerobic.lower.toFixed(0)} - {zone.high_aerobic.upper.toFixed(0)}</td>)}
           <td>LT₁ &lt; x &lt; LT₂</td>
           <td>2.0 &lt; x &lt; 4.0</td>
         </tr>
         <tr>
           <td>(Anaerobic) 3</td>
-          {zones.map(zone => <td key={zone.namn}>{zone.anaerobic.lower.toFixed(0)} - {zone.anaerobic.upper.toFixed(0)}</td>)}
+          {zones.map(zone => <td key={zone.name}>{zone.anaerobic.lower.toFixed(0)} - {zone.anaerobic.upper.toFixed(0)}</td>)}
           <td>x &ge; LT₂</td>
           <td>x &ge; 4.0</td>
         </tr>
