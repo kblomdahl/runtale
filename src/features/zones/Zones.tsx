@@ -1,8 +1,47 @@
+import { FormEvent, useState } from "react";
 import HeartZones from "./HeartZones";
+import LactateZones from "./LactateZones";
+
+export const DEFAULT_RESTING = 44;
+export const DEFAULT_MAXIMUM = 180;
+export const DEFAULT_LACTATE_THRESHOLD = 164;
 
 function Zones() {
+  const [resting, setResting] = useState(DEFAULT_RESTING);
+  const [maximum, setMaximum] = useState(DEFAULT_MAXIMUM);
+  const [lactateThreshold, setLactateThreshold] = useState(DEFAULT_LACTATE_THRESHOLD);
+
+  const updateZoneValues = (e: FormEvent<HTMLFormElement>) => {
+    const form = e.target as HTMLFormElement;
+    setResting((form.resting as HTMLInputElement).valueAsNumber);
+    setMaximum((form.maximum as HTMLInputElement).valueAsNumber);
+    setLactateThreshold((form.lactateThreshold as HTMLInputElement).valueAsNumber);
+
+    e.preventDefault();
+
+    return true;
+  };
+
   return <>
-    <HeartZones />
+    <form onSubmit={e => updateZoneValues(e)} className='-multiple'>
+      <label>
+        <span>Resting</span>
+        <input type='number' name='resting' defaultValue={DEFAULT_RESTING} />
+      </label>
+      <label>
+        <span>Maximum</span>
+        <input type='number' name='maximum' defaultValue={DEFAULT_MAXIMUM} />
+      </label>
+      <label>
+        <span>Lactate Threshold</span>
+        <input type='number' name='lactateThreshold' defaultValue={DEFAULT_LACTATE_THRESHOLD} />
+      </label>
+      <button type='submit'>Calculate zones</button>
+    </form>
+    <hr />
+    <HeartZones resting={resting} maximum={maximum} lactateThreshold={lactateThreshold} />
+    <hr />
+    <LactateZones resting={resting} maximum={maximum} />
   </>;
 }
 

@@ -1,9 +1,3 @@
-import { useState, FormEvent } from "react";
-
-const DEFAULT_RESTING = 42;
-const DEFAULT_MAXIMUM = 196;
-const DEFAULT_LACTATE_THRESHOLD = 174;
-
 function calculateLactateThreshold(resting: number, lactateThreshold: number) {
   return [
     resting,
@@ -61,40 +55,20 @@ function calculateZones(resting: number, maximum: number, lactateThreshold: numb
   });
 }
 
-function HeartZones() {
-  const [zones, setZones] = useState(calculateZones(DEFAULT_RESTING, DEFAULT_MAXIMUM, DEFAULT_LACTATE_THRESHOLD));
-  const updateZoneValues = (e: FormEvent<HTMLFormElement>) => {
-    const form = e.target as HTMLFormElement;
-    const resting = (form.resting as HTMLInputElement).valueAsNumber;
-    const maximum = (form.maximum as HTMLInputElement).valueAsNumber;
-    const lactateThreshold = (form.lactateThreshold as HTMLInputElement).valueAsNumber;
+interface HeartZonesProps {
+  resting: number;
+  maximum: number;
+  lactateThreshold: number;
+}
 
-    setZones(calculateZones(resting, maximum, lactateThreshold));
-    e.preventDefault();
-
-    return true;
-  };
+function HeartZones({ resting, maximum, lactateThreshold }: HeartZonesProps) {
+  const zones = calculateZones(resting, maximum, lactateThreshold);
 
   return <>
     <p>
       This table shows the heart rate zones together with their benefits based
       on your resting heart rate, maximum heart rate, and lactate threshold.
     </p>
-    <form onSubmit={e => updateZoneValues(e)} className='-multiple'>
-      <label>
-        <span>Resting</span>
-        <input type='number' name='resting' defaultValue={DEFAULT_RESTING} />
-      </label>
-      <label>
-        <span>Maximum</span>
-        <input type='number' name='maximum' defaultValue={DEFAULT_MAXIMUM} />
-      </label>
-      <label>
-        <span>Lactate Threshold</span>
-        <input type='number' name='lactateThreshold' defaultValue={DEFAULT_LACTATE_THRESHOLD} />
-      </label>
-      <button type='submit'>Calculate zones</button>
-    </form>
     <table>
       <thead>
         <tr>
