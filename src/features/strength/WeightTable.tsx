@@ -103,7 +103,7 @@ function WeightTable() {
   };
 
   return <>
-    <p>This table shows the weight to maintain an given RPE and number of repetitions based on an estimated one-rep max.</p>
+    <p>This table shows the weight to maintain a given RPE and number of repetitions based on an estimated one-rep max.</p>
     <form onSubmit={e => updateRepRPEValues(e)} className='-multiple'>
       <label>
         <span>Weight</span>
