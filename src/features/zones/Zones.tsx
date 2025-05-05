@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import HeartZones from "./HeartZones";
 import LactateZones from "./LactateZones";
+import SessionRPENumber from './SessionRPENumber';
 
 export const DEFAULT_RESTING = 44;
 export const DEFAULT_MAXIMUM = 180;
@@ -42,6 +43,8 @@ function Zones() {
     <HeartZones resting={resting} maximum={maximum} lactateThreshold={lactateThreshold} />
     <hr />
     <LactateZones resting={resting} maximum={maximum} />
+    <hr />
+    <SessionRPENumber />
   </>;
 }
 
