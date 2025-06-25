@@ -39,16 +39,16 @@ function TrainingIntensityDistributions() {
       </thead>
       <tbody>
         <tr>
-          <td>Low Aerobic</td>
-          {DISTRIBUTIONS.map(tid => <td key={tid.name}>{Math.round(100.0 * tid.low_aerobic)}%</td>)}
+          <td>Anaerobic</td>
+          {DISTRIBUTIONS.map(tid => <td key={tid.name}>{Math.round(100.0 * tid.anaerobic)}%</td>)}
         </tr>
         <tr>
           <td>High Aerobic</td>
           {DISTRIBUTIONS.map(tid => <td key={tid.name}>{Math.round(100.0 * tid.high_aerobic)}%</td>)}
         </tr>
         <tr>
-          <td>Anaerobic</td>
-          {DISTRIBUTIONS.map(tid => <td key={tid.name}>{Math.round(100.0 * tid.anaerobic)}%</td>)}
+          <td>Low Aerobic</td>
+          {DISTRIBUTIONS.map(tid => <td key={tid.name}>{Math.round(100.0 * tid.low_aerobic)}%</td>)}
         </tr>
       </tbody>
     </table>

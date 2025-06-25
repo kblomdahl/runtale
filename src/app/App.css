@@ -121,3 +121,7 @@ hr {
   margin: 2em 0;
   border: dashed 1px rgba(255, 255, 255, 0.20);
 }
+
+p.-bold, span.-bold {
+  font-weight: bold;
+}
