@@ -1,3 +1,5 @@
+import React from "react";
+
 const RPE_TABLE = [
   { rpe: 1, intensity: 'Very Easy' },
   { rpe: 2, intensity: 'Easy' },
@@ -25,8 +27,8 @@ function SessionRPENumber() {
       </thead>
       <tbody>
         {RPE_TABLE.map(({ rpe, intensity, breakpoint }) => {
-          return <>
-            <tr key={rpe}>
+          return <React.Fragment key={rpe}>
+            <tr>
               <td>{rpe}</td>
               <td>{intensity}</td>
             </tr>
@@ -35,7 +37,7 @@ function SessionRPENumber() {
                 <td colSpan={2} className="-center -bold">{breakpoint}</td>
               </tr>
             )}
-          </>;
+          </React.Fragment>;
         })}
       </tbody>
     </table>
