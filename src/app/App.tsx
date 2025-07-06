@@ -3,6 +3,7 @@ import Paces from '../features/paces/Paces';
 import Zones from '../features/zones/Zones';
 import Sessions from '../features/sessions/Sessions';
 import Strength from '../features/strength/Strength';
+import RacePredictor from '../features/race-predictor/RacePredictor';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css'
 
@@ -13,6 +14,7 @@ function App() {
       <Route path="/" element={<Paces />} />
       <Route path="/zones" element={<Zones />} />
       <Route path="/sessions" element={<Sessions />} />
+      <Route path="/race-predictor" element={<RacePredictor />} />
       <Route path="/strength" element={<Strength />} />
     </Routes>
   </BrowserRouter>;
