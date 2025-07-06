@@ -37,6 +37,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Train Race Predictor Models
+        run: npm run train-race-predictor-models
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
