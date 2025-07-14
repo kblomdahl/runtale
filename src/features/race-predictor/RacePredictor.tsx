@@ -6,11 +6,11 @@ const DEFAULT_LT2_PACE = "04:08";
 const DEFAULT_AGE = 38;
 const DEFAULT_GENDER = "male";
 const DISTANCES = [
-  { label: '1 mile', value: '1mile' },
-  { label: '5 kilometers', value: '5km' },
-  { label: '10 kilometers', value: '10km' },
-  { label: 'Half Marathon', value: 'half-marathon' },
-  { label: 'Marathon', value: 'marathon' },
+  { label: '1 mile', value: 1609 },
+  { label: '5 kilometers', value: 5000 },
+  { label: '10 kilometers', value: 10000 },
+  { label: 'Half Marathon', value: 21097.5 },
+  { label: 'Marathon', value: 42195 },
 ];
 const NUMBER_FORMAT = new Intl.NumberFormat(undefined, {
   minimumIntegerDigits: 2,
@@ -42,12 +42,13 @@ function parsePace(hhmm: number) {
   return 60 * hours + minutes;
 }
 
-function predictPace(model: XGBoost, racer: Racer) {
+function predictPace(model: XGBoost, racer: Racer, distance: number) {
   const x = [
     racer.lt2pace,
     racer.vo2max,
     racer.age,
     racer.gender === "male" ? 1 : 0,
+    distance,
   ];
   let regressionValue = 0.0;
 
@@ -61,16 +62,17 @@ function predictPace(model: XGBoost, racer: Racer) {
 interface RacePredictionProps {
   model: XGBoost;
   racer: Racer;
+  distance: number;
 }
 
-function RacePrediction({ model, racer }: RacePredictionProps) {
-  const prediction = useMemo(() => predictPace(model, racer), [model, racer]);
+function RacePrediction({ model, racer, distance }: RacePredictionProps) {
+  const prediction = useMemo(() => predictPace(model, racer, distance), [model, racer, distance]);
 
   return <>{formatSeconds(prediction)}</>;
 }
 
 function RacePredictor() {
-  const [models, setModels] = useState<XGBoost[] | null>(null);
+  const [racePredictorModel, setRacePredictorModel] = useState<XGBoost | null>(null);
   const [racers, setRacers] = useState<Racer[]>([]);
   const addRacer = (e: FormEvent<HTMLFormElement>) => {
     const form = e.target as HTMLFormElement;
@@ -90,16 +92,11 @@ function RacePredictor() {
 
   useEffect(() => {
     const fetchData = async() => {
-      setModels(
-        await Promise.all(
-          DISTANCES.map(async (distance) => {
-            const response = await fetch(`models/race-predictor-${distance.value}.json`);
-            const modelData = await response.json();
+      const response = await fetch(`models/race-predictor.json`);
+      const modelData = await response.json();
+      const model = XGBoost.fromJSON(modelData);
 
-            return XGBoost.fromJSON(modelData);
-          })
-        )
-      );
+      setRacePredictorModel(model);
     };
 
     fetchData();
@@ -147,13 +144,13 @@ function RacePredictor() {
           <td>{racer.gender === "male" ? "Male" : "Female"}</td>
           <td>{racer.vo2max}</td>
           <td>{formatSeconds(racer.lt2pace)}</td>
-          {DISTANCES.map((distance, index) => {
-            if (!models) {
+          {DISTANCES.map(distance => {
+            if (!racePredictorModel) {
               return <td key={distance.value} colSpan={2}>...</td>;
             }
 
             return <td key={distance.value}>
-              <RacePrediction model={models[index]} racer={racer} />
+              <RacePrediction model={racePredictorModel} racer={racer} distance={distance.value} />
             </td>;
           })}
         </tr>)}
