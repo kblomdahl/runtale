@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "train-race-predictor-models": "node ./scripts/train-race-predictor-models.js",
+    "train-race-predictor-model": "node ./scripts/train-race-predictor-model.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

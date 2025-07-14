@@ -28,14 +28,6 @@ function parseValue(value) {
     }
 }
 
-const columns = [
-    "1mile",
-    "5km",
-    "10km",
-    "half-marathon",
-    "marathon"
-];
-
 function predictRegression(model, x) {
     let value = 0.0;
 
@@ -54,23 +46,28 @@ const lines = await Promise.all(files.map(async file => {
     return lines;
 }));
 const predictions = lines.flatMap(lines => lines.map(line => line.split(",").map(value => parseValue(value.trim()))));
-const X_train = predictions.map(row => row.slice(0, 4));
+const X_train = predictions.flatMap(row => {
+    return [
+        [...row.slice(0, 4), 1609],
+        [...row.slice(0, 4), 5000],
+        [...row.slice(0, 4), 10000],
+        [...row.slice(0, 4), 21097.5],
+        [...row.slice(0, 4), 42195],
+    ];
+});
+const y_train = predictions.flatMap(row => row.slice(4));
+const model = new XGBoost({
+    learningRate: 0.01,
+    maxDepth: 5,
+    minChildWeight: 1,
+    numRounds: 500,
+});
 
-for (let i = 4; i < predictions[0].length; i++) {
-    const y_train = predictions.map(row => row[i]);
-    const model = new XGBoost({
-        learningRate: 0.01,
-        maxDepth: 3,
-        minChildWeight: 1,
-        numRounds: 500
-    });
+model.fit(X_train, y_train);
+console.log(`Feature Importance`, model.getFeatureImportance());
+console.log(`Prediction`, predictRegression(model, [240, 58, 38, 1, 5000]));
 
-    model.fit(X_train, y_train);
-    console.log(`${columns[i-4]}: Feature Importance`, model.getFeatureImportance());
-    console.log(`${columns[i-4]}: Prediction`, predictRegression(model, [240, 58, 38, 1]));
-
-    await fs.promises.writeFile(
-        `public/models/race-predictor-${columns[i-4]}.json`,
-        JSON.stringify(model.toJSON())
-    );
-}
+await fs.promises.writeFile(
+    `public/models/race-predictor.json`,
+    JSON.stringify(model.toJSON())
+);
