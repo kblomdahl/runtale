@@ -16,6 +16,7 @@ dist-ssr
 public/models/*.json
 
 # Editor directories and files
+.direnv
 .vscode/*
 !.vscode/extensions.json
 .idea
