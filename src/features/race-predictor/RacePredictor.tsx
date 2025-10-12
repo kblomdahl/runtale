@@ -1,8 +1,8 @@
 import { useState, useMemo, FormEvent, useEffect } from 'react';
 import { XGBoost } from '@fractal-solutions/xgboost-js';
 
-const DEFAULT_VO2MAX = 58;
-const DEFAULT_LT2_PACE = "04:08";
+const DEFAULT_VO2MAX = 57;
+const DEFAULT_LT2_PACE = "04:12";
 const DEFAULT_AGE = 38;
 const DEFAULT_GENDER = "male";
 const DISTANCES = [

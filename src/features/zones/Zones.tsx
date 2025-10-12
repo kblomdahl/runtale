@@ -4,8 +4,8 @@ import LactateZones from "./LactateZones";
 import SessionRPENumber from './SessionRPENumber';
 
 export const DEFAULT_RESTING = 42;
-export const DEFAULT_MAXIMUM = 180;
-export const DEFAULT_LACTATE_THRESHOLD = 170;
+export const DEFAULT_MAXIMUM = 183;
+export const DEFAULT_LACTATE_THRESHOLD = 168;
 
 function Zones() {
   const [resting, setResting] = useState(DEFAULT_RESTING);
