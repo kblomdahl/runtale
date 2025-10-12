@@ -63,6 +63,23 @@ table {
   border-collapse: collapse;
 }
 
+table.-inline {
+  display: inline-table;
+  margin: 0;
+}
+
+table.-inline tr {
+  border: none
+}
+
+table.-inline tbody tr:hover {
+  background-color: transparent;
+}
+
+table.-inline td.-left {
+  padding-left: 0.5em;
+}
+
 th {
   text-align: right;
   width: 8em;
@@ -73,8 +90,16 @@ th.-left {
   padding-left: 1em;
 }
 
+th.-center {
+  text-align: center;
+}
+
 th.-wide {
   width: 24em;
+}
+
+th.-narrow {
+  width: 5em;
 }
 
 td {
@@ -96,6 +121,14 @@ td.-bold {
 
 td.-fade {
   opacity: 50%;
+}
+
+td.-small {
+  font-size: 75%;
+}
+
+td.-narrow {
+  width: 5em;
 }
 
 tr {
