@@ -119,7 +119,7 @@ class QualityDay extends WeekDay {
     const warmUpDuration = 3600 * WARM_UP_DOWN_DURATION_HOURS / 2;
     const warmDownDuration = 3600 * WARM_UP_DOWN_DURATION_HOURS / 2;
     const qualityDuration = this.duration - warmUpDuration - warmDownDuration;
-    const repetitions = Math.floor(qualityDuration / this.session.duration);
+    const repetitions = (qualityDuration + this.session.rest) / (this.session.duration + this.session.rest);
 
     return <table className='-inline'>
       <tbody>
@@ -129,7 +129,7 @@ class QualityDay extends WeekDay {
         </tr>
         <tr>
           <td className='-fade'>{formatDuration(qualityDuration)}</td>
-          <td className='-left'>{repetitions} &times; {this.session.name}</td>
+          <td className='-left'>{Math.round(repetitions)} &times; {this.session.name}</td>
         </tr>
         <tr>
           <td className='-fade'>{formatDuration(warmDownDuration)}</td>
