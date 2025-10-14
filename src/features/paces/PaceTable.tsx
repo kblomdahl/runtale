@@ -1,4 +1,5 @@
 import { useState, FormEvent } from 'react';
+import DurationInputField from '../../components/DurationInputField';
 
 const DEFAULT_PACES = Array.from({ length: 10 }, (_, i) => 390 - i * 10)
   .concat(Array.from({ length: 24 }, (_, i) => 295 - i * 5));
@@ -25,17 +26,6 @@ function formatSeconds(seconds: number) {
   return parts.filter(part => part > 0).map(part => NUMBER_FORMAT.format(part % 60)).join(':');
 }
 
-// The time input fields use the format `HH:mm` but we're using it as if it
-// was a `mm:ss` format. So we need to convert between them, for example
-// `hhmm` is `14220000` is equivalent to `3:57`.
-function parsePace(hhmm: number) {
-  const MILLISECONDS_PER_HOUR = 3600 * 1000;
-  const hours = Math.floor(hhmm / MILLISECONDS_PER_HOUR);
-  const minutes = (hhmm % MILLISECONDS_PER_HOUR) * (60 / MILLISECONDS_PER_HOUR);
-
-  return 60 * hours + minutes;
-}
-
 function formatDecimals(x: number) {
   return x.toFixed(1);
 }
@@ -45,7 +35,7 @@ function PaceTable() {
   const [customPaces, setCustomPaces] = useState(new Set());
   const addPace = (e: FormEvent<HTMLFormElement>) => {
     const form = e.target as HTMLFormElement;
-    const newPace = parsePace((form.pace as HTMLInputElement).valueAsNumber);
+    const newPace = +(form.pace as HTMLInputElement).value;
     const newPaces = [...new Set([...paces, newPace])];
 
     newPaces.sort((a, b) => b - a);
@@ -63,7 +53,7 @@ function PaceTable() {
     <form onSubmit={e => addPace(e)} className='-single'>
       <label>
           <span>Pace</span>
-          <input type="time" name="pace" max={'10:00'} defaultValue={'04:00'} />
+          <DurationInputField name="pace" defaultValue={'04:00'} />
       </label>
       <button type='submit'>Add to table</button>
     </form>

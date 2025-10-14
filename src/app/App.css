@@ -59,6 +59,11 @@ form.-multiple label {
   justify-content: space-between;
 }
 
+form input.-duration {
+  text-align: right;
+  width: 4em;
+}
+
 table {
   border-collapse: collapse;
 }
