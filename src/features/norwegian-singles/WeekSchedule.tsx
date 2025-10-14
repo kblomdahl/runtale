@@ -4,23 +4,12 @@ const WARM_UP_DOWN_DURATION_HOURS = 20 / 60; // 20 minutes
 const QUALITY_VOLUME_RATIO = 0.225; // between 20% and 25%
 const MAX_LONG_RUN_DURATION_HOURS = 2.5;
 const MAX_LONG_RUN_WEEKLY_RATIO = 0.30;
+const EASY_RUN_PACE_FACTOR = (1.15 + 1.30) / 2.0;
+const EASY_INTENSITY_FACTOR = 1.0 / EASY_RUN_PACE_FACTOR;
+const LT2_INTENSITY_FACTOR = 1.0;
 
-function tssVolumeToHours(
-  targetTssVolume: number,
-  easyRunPace: number,
-  functionalThresholdPace: number
-): number {
-  const easyRunSpeed = 1000 / easyRunPace;
-  const functionalThresholdSpeed = 1000 / functionalThresholdPace;
-  const easyIntensityFactor = easyRunSpeed / functionalThresholdSpeed;
-
-  return targetTssVolume / (100 * ((1 - QUALITY_VOLUME_RATIO) * easyIntensityFactor ** 2 + QUALITY_VOLUME_RATIO));
-}
-
-function functionalThresholdToEasyPace(functionalThresholdPace: number) {
-  const EASY_RUN_PACE_FACTOR = (1.15 + 1.30) / 2.0;
-
-  return functionalThresholdPace * EASY_RUN_PACE_FACTOR;
+function tssVolumeToHours(targetTssVolume: number): number {
+  return targetTssVolume / (100 * ((1 - QUALITY_VOLUME_RATIO) * EASY_INTENSITY_FACTOR ** 2 + QUALITY_VOLUME_RATIO));
 }
 
 enum WeekDayType {
@@ -33,14 +22,12 @@ enum WeekDayType {
 abstract class WeekDay {
   readonly name: string;
   readonly type: WeekDayType;
-  readonly pace: number;
   readonly duration: number;
   readonly intensityFactor: number;
 
-  constructor(name: string, type: WeekDayType, pace: number, duration: number, intensityFactor: number) {
+  constructor(name: string, type: WeekDayType, duration: number, intensityFactor: number) {
     this.name = name;
     this.type = type;
-    this.pace = pace;
     this.duration = duration;
     this.intensityFactor = intensityFactor;
   }
@@ -56,23 +43,19 @@ abstract class WeekDay {
   }
 
   get distance() {
-    if (this.pace === 0) {
-      return 0;
-    }
-
-    return this.duration / this.pace;
+    return 0;
   }
 }
 
 class RestDay extends WeekDay {
   constructor(name: string) {
-    super(name, WeekDayType.REST, 0, 0, 0);
+    super(name, WeekDayType.REST, 0, 0);
   }
 }
 
 class EasyDay extends WeekDay {
-  constructor(name: string, pace: number, duration: number, intensityFactor: number) {
-    super(name, WeekDayType.EASY, pace, duration, intensityFactor);
+  constructor(name: string, duration: number) {
+    super(name, WeekDayType.EASY, duration, EASY_INTENSITY_FACTOR);
   }
 
   get description() {
@@ -101,16 +84,16 @@ class EasyDay extends WeekDay {
 }
 
 class LongRunDay extends WeekDay {
-  constructor(name: string, pace: number, duration: number, intensityFactor: number) {
-    super(name, WeekDayType.LONG_RUN, pace, duration, intensityFactor);
+  constructor(name: string, duration: number) {
+    super(name, WeekDayType.LONG_RUN, duration, EASY_INTENSITY_FACTOR);
   }
 }
 
 class QualityDay extends WeekDay {
   readonly session: QualitySession;
 
-  constructor(name: string, pace: number, duration: number, intensityFactor: number, session: QualitySession) {
-    super(name, WeekDayType.QUALITY, pace, duration, intensityFactor);
+  constructor(name: string, duration: number, intensityFactor: number, session: QualitySession) {
+    super(name, WeekDayType.QUALITY, duration, intensityFactor);
 
     this.session = session;
   }
@@ -161,12 +144,10 @@ function scheduleWeekDays(
   longRunDay: number,
   restingDays: number[],
   qualityDays: number[],
-  targetTssVolume: number,
-  functionalThresholdPace: number
+  targetTssVolume: number
 ): WeekDay[]
 {
-  const easyRunPace = functionalThresholdToEasyPace(functionalThresholdPace);
-  const targetVolumeHours = tssVolumeToHours(targetTssVolume, easyRunPace, functionalThresholdPace);
+  const targetVolumeHours = tssVolumeToHours(targetTssVolume);
 
   const warmUpDownVolumeHours = WARM_UP_DOWN_DURATION_HOURS * qualityDays.length;
   const easyVolumeHours = targetVolumeHours * (1 - QUALITY_VOLUME_RATIO);
@@ -189,7 +170,7 @@ function scheduleWeekDays(
     } else if (index === longRunDay) {
       const longRunDuration = longRunVolumeHours * 3600;
 
-      return new LongRunDay(day, easyRunPace, longRunDuration, functionalThresholdPace / easyRunPace);
+      return new LongRunDay(day, longRunDuration);
     } else if (qualityDays.includes(index)) {
       const qualitySession = qualitySessions[qualityDays.indexOf(index)];
       const repetitions = Math.floor(qualitySessionDurationSecs / qualitySession.duration);
@@ -197,20 +178,19 @@ function scheduleWeekDays(
       const warmUpDownDuration = WARM_UP_DOWN_DURATION_HOURS * 3600;
       const qualityDuration = repetitions * qualitySession.duration;
       const restDuration = Math.max(0, (repetitions - 1) * qualitySession.rest);
-
       const totalSessionDuration = qualityDuration + warmUpDownDuration + restDuration;
-      const averageQualityPace = (
-        qualityDuration * functionalThresholdPace +
-        (warmUpDownDuration + restDuration) * easyRunPace
-      ) / totalSessionDuration;
-      const intensityFactor = functionalThresholdPace / averageQualityPace;
+      const intensityFactor = (
+        (warmUpDownDuration / totalSessionDuration) * EASY_INTENSITY_FACTOR +
+        (qualityDuration / totalSessionDuration) * LT2_INTENSITY_FACTOR +
+        (restDuration / totalSessionDuration) * EASY_INTENSITY_FACTOR
+      );
 
-      return new QualityDay(day, averageQualityPace, totalSessionDuration, intensityFactor, qualitySession);
+      return new QualityDay(day, totalSessionDuration, intensityFactor, qualitySession);
     } else {
       const numberOfEasyDays = WEEKDAYS.length - restingDays.length - qualityDays.length - 1;
       const easyRunDuration = (effectiveEasyVolumeHours * 3600) / numberOfEasyDays;
 
-      return new EasyDay(day, easyRunPace, easyRunDuration, functionalThresholdPace / easyRunPace);
+      return new EasyDay(day, easyRunDuration);
     }
   });
 }
@@ -220,18 +200,16 @@ interface WeekScheduleProps {
   restingDays: number[];
   qualityDays: number[];
   targetTssVolume: number;
-  functionalThresholdPace: number;
 }
 
 export default function WeekSchedule({
   longRunDay,
   restingDays,
   qualityDays,
-  targetTssVolume: targetVolume,
-  functionalThresholdPace
+  targetTssVolume: targetVolume
 }: WeekScheduleProps)
 {
-  const weekDays = scheduleWeekDays(longRunDay, restingDays, qualityDays, targetVolume, functionalThresholdPace);
+  const weekDays = scheduleWeekDays(longRunDay, restingDays, qualityDays, targetVolume);
 
   return (
     <table>
