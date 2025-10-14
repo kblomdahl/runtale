@@ -6,22 +6,11 @@ import QualitySessions from './QualitySessions';
 import { WEEKDAYS } from './Utils';
 
 const DEFAULT_TARGET_VOLUME = 350;
-const DEFAULT_LT2_PACE = '04:12';
-const DEFAULT_LT2_PACE_NUM = parsePace(15120000);
 const DEFAULT_LONG_RUN_DAY = 6; // Sunday
 const DEFAULT_RESTING_DAYS = [0]; // Monday
 
-function parsePace(hhmm: number) {
-  const MILLISECONDS_PER_HOUR = 3600 * 1000;
-  const hours = Math.floor(hhmm / MILLISECONDS_PER_HOUR);
-  const minutes = (hhmm % MILLISECONDS_PER_HOUR) * (60 / MILLISECONDS_PER_HOUR);
-
-  return 60 * hours + minutes;
-}
-
 function NorwegianSingles() {
   const [targetTssVolume, setTargetVolume] = useState(DEFAULT_TARGET_VOLUME);
-  const [functionalThresholdPace, setFunctionalThresholdPace] = useState(DEFAULT_LT2_PACE_NUM);
   const [longRunDay, setLongRunDay] = useState(DEFAULT_LONG_RUN_DAY);
   const [restingDays, setRestingDays] = useState(DEFAULT_RESTING_DAYS);
   const qualityDays = useMemo(() => {
@@ -35,12 +24,10 @@ function NorwegianSingles() {
   const setTrainingParameters = (e: FormEvent<HTMLFormElement>) => {
     const form = e.target as HTMLFormElement;
     const targetTrainingLoad = (form.targetTrainingLoad as HTMLInputElement).valueAsNumber;
-    const functionalThresholdPace = (form.functionalThresholdPace as HTMLInputElement).valueAsNumber;
     const longRunDay = +(form.longRunDay as HTMLSelectElement).value;
     const restingDays = Array.from((form.restingDays as HTMLSelectElement).selectedOptions).map(option => +option.value);
 
     setTargetVolume(targetTrainingLoad);
-    setFunctionalThresholdPace(parsePace(functionalThresholdPace));
     setLongRunDay(longRunDay);
     setRestingDays(restingDays);
     e.preventDefault();
@@ -53,10 +40,6 @@ function NorwegianSingles() {
       <label>
         <span>Target Training Load (ATL)</span>
         <input type='number' name='targetTrainingLoad' defaultValue={DEFAULT_TARGET_VOLUME} />
-      </label>
-      <label>
-        <span>LT₂ Pace (min/km)</span>
-        <input type='time' name='functionalThresholdPace' defaultValue={DEFAULT_LT2_PACE} />
       </label>
       <label>
         <span>Long Run Day</span>
@@ -84,7 +67,6 @@ function NorwegianSingles() {
           longRunDay={longRunDay}
           qualityDays={qualityDays}
           targetTssVolume={targetTssVolume}
-          functionalThresholdPace={functionalThresholdPace}
         />
         <QualitySessions />
       </>
