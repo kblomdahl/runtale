@@ -10,7 +10,6 @@ function Header() {
         <li><Link to="/zones">Zones</Link></li>
         <li><Link to="/sessions">Sessions</Link></li>
         <li><Link to="/strength">Strength</Link></li>
-        <li><Link to="/race-predictor">Race Predictor</Link></li>
         <li><Link to="/norwegian-singles">Norwegian Singles</Link></li>
       </ul>
     </nav>
