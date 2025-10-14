@@ -35,8 +35,6 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
-      - name: Train Race Predictor Models
-        run: npm run train-race-predictor-model
       - name: Build
         run: npm run build
       - name: Setup Pages
