@@ -17,6 +17,10 @@ export default class Speed {
     return new Speed(1000 / (hoursPerKilometer * 3600));
   }
 
+  static fromJSON(json: number): Speed {
+    return Speed.fromMetersPerSecond(json);
+  }
+
   toMetersPerSecond(): number {
     return this.metersPerSecond;
   }
@@ -27,5 +31,9 @@ export default class Speed {
     const seconds = Math.round(totalSeconds % 60);
 
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  toJSON(): number {
+    return this.metersPerSecond;
   }
 }
