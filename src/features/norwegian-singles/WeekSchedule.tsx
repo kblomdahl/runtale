@@ -1,5 +1,9 @@
 import CriticalSpeed from './CriticalSpeed';
-import { QUALITY_SESSIONS, WEEKDAYS, Duration, Speed, Distance, QualitySession, shuffle } from './Utils';
+import Distance from '../../utils/Distance';
+import Duration from '../../utils/Duration';
+import Speed from '../../utils/Speed';
+import QualitySession, { QUALITY_SESSIONS } from './QualitySession';
+import { WEEKDAYS, shuffle } from './Utils';
 
 const WARM_UP_DURATION = Duration.fromMinutes(10);
 const WARM_DOWN_DURATION = Duration.fromMinutes(10);

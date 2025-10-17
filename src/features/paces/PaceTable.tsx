@@ -1,5 +1,6 @@
 import { useState, FormEvent } from 'react';
 import DurationInputField from '../../components/DurationInputField';
+import Duration from '../../utils/Duration';
 
 const DEFAULT_PACES = Array.from({ length: 10 }, (_, i) => 390 - i * 10)
   .concat(Array.from({ length: 24 }, (_, i) => 295 - i * 5));
@@ -53,7 +54,7 @@ function PaceTable() {
     <form onSubmit={e => addPace(e)} className='-inline'>
       <label>
           <span>Pace</span>
-          <DurationInputField name="pace" defaultValue={'04:00'} />
+          <DurationInputField name="pace" defaultValue={Duration.fromMinutes(4)} />
       </label>
       <button type='submit'>Add to table</button>
     </form>
