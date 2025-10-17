@@ -1,5 +1,6 @@
-import { useState, Fragment, FormEvent } from "react";
+import { Fragment, FormEvent, useMemo } from "react";
 import { RPE_TABLE } from './RPETable';
+import useLocalStorage from "../../utils/UseLocalStorage";
 
 const DEFAULT_WEIGHT = 55.0;
 const DEFAULT_REPS = 8.0;
@@ -89,14 +90,19 @@ function WeightTableBody({ oneRepMax }: WeightTableBodyProps) {
 }
 
 function WeightTable() {
-  const [oneRepMax, setOneRepMax] = useState(calculateOneRepMax(DEFAULT_WEIGHT, DEFAULT_REPS, DEFAULT_RPE));
+  const [weight, setWeight] = useLocalStorage('WeightTable/weight', DEFAULT_WEIGHT);
+  const [reps, setReps] = useLocalStorage('WeightTable/reps', DEFAULT_REPS);
+  const [rpe, setRpe] = useLocalStorage('WeightTable/rpe', DEFAULT_RPE);
+  const oneRepMax = useMemo(() => calculateOneRepMax(weight, reps, rpe), [weight, reps, rpe]);
   const updateRepRPEValues = (e: FormEvent<HTMLFormElement>) => {
     const form = e.target as HTMLFormElement;
     const weight = (form.weight as HTMLInputElement).valueAsNumber;
     const reps = (form.reps as HTMLInputElement).valueAsNumber;
     const rpe = (form.rpe as HTMLInputElement).valueAsNumber;
 
-    setOneRepMax(calculateOneRepMax(weight, reps, rpe));
+    setWeight(weight);
+    setReps(reps);
+    setRpe(rpe);
     e.preventDefault();
 
     return true;
@@ -108,15 +114,15 @@ function WeightTable() {
       <section className='-aligned-form'>
         <label>
           <span>Weight</span>
-          <input type='number' step={0.5} name='weight' defaultValue={DEFAULT_WEIGHT} />
+          <input type='number' step={0.5} name='weight' defaultValue={weight} />
         </label>
         <label>
           <span>Repetitions</span>
-          <input type='number' name='reps' defaultValue={DEFAULT_REPS} />
+          <input type='number' name='reps' defaultValue={reps} />
         </label>
         <label>
           <span>RPE Number</span>
-          <input type='number' step={0.25} name='rpe' defaultValue={DEFAULT_RPE} />
+          <input type='number' step={0.25} name='rpe' defaultValue={rpe} />
         </label>
         <button type='submit'>Calculate weights</button>
       </section>

@@ -1,16 +1,17 @@
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import HeartZones from "./HeartZones";
 import LactateZones from "./LactateZones";
 import SessionRPENumber from './SessionRPENumber';
+import useLocalStorage from '../../utils/UseLocalStorage';
 
 export const DEFAULT_RESTING = 42;
 export const DEFAULT_MAXIMUM = 183;
 export const DEFAULT_LACTATE_THRESHOLD = 168;
 
 function Zones() {
-  const [resting, setResting] = useState(DEFAULT_RESTING);
-  const [maximum, setMaximum] = useState(DEFAULT_MAXIMUM);
-  const [lactateThreshold, setLactateThreshold] = useState(DEFAULT_LACTATE_THRESHOLD);
+  const [resting, setResting] = useLocalStorage('Zones/resting', DEFAULT_RESTING);
+  const [maximum, setMaximum] = useLocalStorage('Zones/maximum', DEFAULT_MAXIMUM);
+  const [lactateThreshold, setLactateThreshold] = useLocalStorage('Zones/lactateThreshold', DEFAULT_LACTATE_THRESHOLD);
 
   const updateZoneValues = (e: FormEvent<HTMLFormElement>) => {
     const form = e.target as HTMLFormElement;
@@ -28,15 +29,15 @@ function Zones() {
       <section className='-aligned-form'>
         <label>
           <span>Resting</span>
-          <input type='number' name='resting' defaultValue={DEFAULT_RESTING} />
+          <input type='number' name='resting' defaultValue={resting} />
         </label>
         <label>
           <span>Maximum</span>
-          <input type='number' name='maximum' defaultValue={DEFAULT_MAXIMUM} />
+          <input type='number' name='maximum' defaultValue={maximum} />
         </label>
         <label>
           <span>Lactate Threshold</span>
-          <input type='number' name='lactateThreshold' defaultValue={DEFAULT_LACTATE_THRESHOLD} />
+          <input type='number' name='lactateThreshold' defaultValue={lactateThreshold} />
         </label>
         <button type='submit'>Calculate zones</button>
       </section>

@@ -1,4 +1,4 @@
-import { useState, FormEvent, useMemo } from 'react';
+import { FormEvent, useMemo } from 'react';
 
 import Distance from '../../utils/Distance';
 import Duration from '../../utils/Duration';
@@ -8,6 +8,7 @@ import QualitySessions from './QualitySessions';
 import { WEEKDAYS } from './Utils';
 import DurationInputField from '../../components/DurationInputField';
 import CriticalSpeed from './CriticalSpeed';
+import useLocalStorage from '../../utils/UseLocalStorage';
 
 const DEFAULT_TARGET_VOLUME = 350;
 const DEFAULT_LONG_RUN_DAY = 6; // Sunday
@@ -22,11 +23,11 @@ const DEFAULT_TT_TIMES: [Duration, Duration] = [
 ];
 
 function NorwegianSingles() {
-  const [distances, setDistances] = useState<[Distance, Distance]>(DEFAULT_TT_DISTANCES);
-  const [times, setTimes] = useState<[Duration, Duration]>(DEFAULT_TT_TIMES);
-  const [targetTssVolume, setTargetVolume] = useState(DEFAULT_TARGET_VOLUME);
-  const [longRunDay, setLongRunDay] = useState(DEFAULT_LONG_RUN_DAY);
-  const [restingDays, setRestingDays] = useState(DEFAULT_RESTING_DAYS);
+  const [distances, setDistances] = useLocalStorage<[Distance, Distance]>('NorwegianSingles/distances', DEFAULT_TT_DISTANCES, (distances) => JSON.parse(distances).map((d: number) => Distance.fromJSON(d)));
+  const [times, setTimes] = useLocalStorage<[Duration, Duration]>('NorwegianSingles/times', DEFAULT_TT_TIMES, (times) => JSON.parse(times).map((t: number) => Duration.fromJSON(t)));
+  const [targetTssVolume, setTargetVolume] = useLocalStorage<number>('NorwegianSingles/targetTssVolume', DEFAULT_TARGET_VOLUME);
+  const [longRunDay, setLongRunDay] = useLocalStorage<number>('NorwegianSingles/longRunDay', DEFAULT_LONG_RUN_DAY);
+  const [restingDays, setRestingDays] = useLocalStorage<number[]>('NorwegianSingles/restingDays', DEFAULT_RESTING_DAYS);
   const criticalSpeed = useMemo(() => CriticalSpeed.fromRaces(distances, times), [distances, times]);
   const qualityDays = useMemo(() => {
     const days = WEEKDAYS

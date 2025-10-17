@@ -17,6 +17,10 @@ export default class Duration {
     return new Duration(hours * 3600);
   }
 
+  static fromJSON(json: number): Duration {
+    return Duration.fromSeconds(json);
+  }
+
   format(minParts: number = 1): string {
     const parts = [
       Math.floor(this.toSeconds() / 3600),
@@ -66,5 +70,9 @@ export default class Duration {
 
   toHours(): number {
     return this.seconds / 3600;
+  }
+
+  toJSON(): number {
+    return this.seconds;
   }
 }
