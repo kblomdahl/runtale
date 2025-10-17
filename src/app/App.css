@@ -39,29 +39,52 @@ form, p, table {
   margin: 1em 1em;
 }
 
-form.-single input {
+.-responsive-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em 4em;
+}
+
+input[type=number] {
+  width: 5em;
+}
+
+form.-inline input {
   margin: 0 0.5em;
 }
 
-form.-single button {
+form.-inline button {
   height: 24px;
 }
 
-form.-multiple {
+.-aligned-form {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
-  width: 360px;
+  width: 300px;
 }
 
-form.-multiple label {
+.-aligned-form label {
   display: flex;
   justify-content: space-between;
 }
 
+.-flex {
+  display: flex;
+  gap: 0.5em;
+}
+
+.-inline-block {
+  display: inline-block;
+}
+
+.-width-100 {
+  width: 100%;
+}
+
 form input.-duration {
   text-align: right;
-  width: 4em;
+  width: 5em;
 }
 
 table {
