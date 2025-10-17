@@ -198,7 +198,7 @@ function scheduleWeekDays(
       const averageIntensityFactor = (
         WARM_UP_DOWN_DURATION.toSeconds() * EASY_INTENSITY_FACTOR +
         qualityDuration.toSeconds() * qualityIntensityFactor +
-        restDuration .toSeconds() * EASY_INTENSITY_FACTOR
+        restDuration.toSeconds() * EASY_INTENSITY_FACTOR
       ) / totalSessionDuration.toSeconds();
 
       return new QualityDay(day, averageSpeed, totalSessionDuration, repetitions, averageIntensityFactor, qualitySession);
