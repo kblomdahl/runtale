@@ -1,4 +1,4 @@
-import { QUALITY_SESSIONS } from "./Utils";
+import { QUALITY_SESSIONS } from "./QualitySession";
 import CriticalSpeed from "./CriticalSpeed";
 
 interface QualitySessionsProps {

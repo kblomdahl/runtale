@@ -1,4 +1,6 @@
-import { Speed, Distance, Duration } from './Utils';
+import Distance from '../../utils/Distance';
+import Duration from '../../utils/Duration';
+import Speed from '../../utils/Speed';
 
 class CriticalSpeed {
   readonly criticalSpeed: Speed;

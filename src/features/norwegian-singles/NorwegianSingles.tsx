@@ -1,19 +1,29 @@
 import { useState, FormEvent, useMemo } from 'react';
 
+import Distance from '../../utils/Distance';
+import Duration from '../../utils/Duration';
 import { scheduleQualityDays } from './Scheduler'
 import WeekSchedule from './WeekSchedule';
 import QualitySessions from './QualitySessions';
-import { Distance, Duration, WEEKDAYS } from './Utils';
+import { WEEKDAYS } from './Utils';
 import DurationInputField from '../../components/DurationInputField';
 import CriticalSpeed from './CriticalSpeed';
 
 const DEFAULT_TARGET_VOLUME = 350;
 const DEFAULT_LONG_RUN_DAY = 6; // Sunday
 const DEFAULT_RESTING_DAYS = [0]; // Monday
+const DEFAULT_TT_DISTANCES: [Distance, Distance] = [
+  Distance.fromMeters(1609.34),
+  Distance.fromMeters(5000)
+];
+const DEFAULT_TT_TIMES: [Duration, Duration] = [
+  Duration.fromMinutes(5.42),
+  Duration.fromMinutes(19)
+];
 
 function NorwegianSingles() {
-  const [distances, setDistances] = useState<[Distance, Distance]>([Distance.fromMeters(0), Distance.fromMeters(0)]);
-  const [times, setTimes] = useState<[Duration, Duration]>([Duration.fromSeconds(0), Duration.fromSeconds(0)]);
+  const [distances, setDistances] = useState<[Distance, Distance]>(DEFAULT_TT_DISTANCES);
+  const [times, setTimes] = useState<[Duration, Duration]>(DEFAULT_TT_TIMES);
   const [targetTssVolume, setTargetVolume] = useState(DEFAULT_TARGET_VOLUME);
   const [longRunDay, setLongRunDay] = useState(DEFAULT_LONG_RUN_DAY);
   const [restingDays, setRestingDays] = useState(DEFAULT_RESTING_DAYS);
@@ -80,15 +90,15 @@ function NorwegianSingles() {
           <label>
             <span>Time Trial 1</span>
             <span className='-flex'>
-              <input type='number' name='distances[]' placeholder={'1609.34'} width='40%' />
-              <DurationInputField name='times[]' />
+              <input type='number' name='distances[]' defaultValue={distances[0].toMeters()} placeholder={'1609.34'} width='40%' />
+              <DurationInputField name='times[]' defaultValue={times[0]} />
             </span>
           </label>
           <label>
             <span>Time Trial 2</span>
             <span className='-flex'>
-              <input type='number' name='distances[]' placeholder={'5000'} width='40%' />
-              <DurationInputField name='times[]' />
+              <input type='number' name='distances[]' defaultValue={distances[1].toMeters()} placeholder={'5000'} width='40%' />
+              <DurationInputField name='times[]' defaultValue={times[1]} />
             </span>
           </label>
         </section>
@@ -113,4 +123,3 @@ function NorwegianSingles() {
 }
 
 export default NorwegianSingles;
- 

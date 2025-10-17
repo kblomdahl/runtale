@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Duration from '../utils/Duration';
 
 function prettyPrintDuration(input: string): string {
   return input
@@ -16,13 +17,14 @@ function parseDuration(input: string): number {
 
 interface DurationInputFieldProps {
   name: string;
-  defaultValue?: string | null;
+  defaultValue?: Duration | null;
   className?: string;
 }
 
 function DurationInputField(props: DurationInputFieldProps) {
   const {name, defaultValue, className} = props;
-  const [value, setValue] = useState(defaultValue || '');
+  const prettyPrintDefaultValue = defaultValue?.format() || '';
+  const [value, setValue] = useState(prettyPrintDefaultValue);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(prettyPrintDuration(e.target.value));
@@ -33,7 +35,7 @@ function DurationInputField(props: DurationInputFieldProps) {
       <input
         type="hidden"
         name={name}
-        value={parseDuration(value)}
+        value={value && parseDuration(value)}
       />
       <input
         type="text"
