@@ -1,6 +1,11 @@
-import { QUALITY_SESSIONS, formatDuration } from "./Utils";
+import { QUALITY_SESSIONS } from "./Utils";
+import CriticalSpeed from "./CriticalSpeed";
 
-export default function QualitySessions() {
+interface QualitySessionsProps {
+  criticalSpeed: CriticalSpeed;
+}
+  
+export default function QualitySessions({ criticalSpeed }: QualitySessionsProps) {
   return <>
     <p className='-bold'>Quality Session</p>
     <p>
@@ -20,16 +25,18 @@ export default function QualitySessions() {
           <th>Format</th>
           <th className='-center'>Interval Duration</th>
           <th className='-center'>Rest Duration</th>
-          <th className='-left -wide'>Pace</th>
+          <th className='-right'>Pace (min/km)</th>
+          <th className='-left -wide'>Description</th>
         </tr>
       </thead>
       <tbody>
         {QUALITY_SESSIONS.map(session => (
           <tr key={session.name}>
             <td>{session.name}</td>
-            <td className='-center'>{formatDuration(session.duration, 2)}</td>
-            <td className='-center'>{formatDuration(session.rest, 2)}</td>
-            <td className='-left -wide'>{session.pace}</td>
+            <td className='-center'>{session.interval.format(2)}</td>
+            <td className='-center'>{session.rest.format(2)}</td>
+            <td className='-right'>{session.speed(criticalSpeed).toMinutesPerKilometer()}</td>
+            <td className='-left -wide'>{session.paceDescription}</td>
           </tr>
         ))}
       </tbody>

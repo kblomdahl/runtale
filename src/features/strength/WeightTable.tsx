@@ -104,20 +104,22 @@ function WeightTable() {
 
   return <>
     <p>This table shows the weight to maintain a given RPE and number of repetitions based on an estimated one-rep max.</p>
-    <form onSubmit={e => updateRepRPEValues(e)} className='-multiple'>
-      <label>
-        <span>Weight</span>
-        <input type='number' step={0.5} name='weight' defaultValue={DEFAULT_WEIGHT} />
-      </label>
-      <label>
-        <span>Repetitions</span>
-        <input type='number' name='reps' defaultValue={DEFAULT_REPS} />
-      </label>
-      <label>
-        <span>RPE Number</span>
-        <input type='number' step={0.25} name='rpe' defaultValue={DEFAULT_RPE} />
-      </label>
-      <button type='submit'>Calculate weights</button>
+    <form onSubmit={e => updateRepRPEValues(e)}>
+      <section className='-aligned-form'>
+        <label>
+          <span>Weight</span>
+          <input type='number' step={0.5} name='weight' defaultValue={DEFAULT_WEIGHT} />
+        </label>
+        <label>
+          <span>Repetitions</span>
+          <input type='number' name='reps' defaultValue={DEFAULT_REPS} />
+        </label>
+        <label>
+          <span>RPE Number</span>
+          <input type='number' step={0.25} name='rpe' defaultValue={DEFAULT_RPE} />
+        </label>
+        <button type='submit'>Calculate weights</button>
+      </section>
     </form>
     <table>
       <WeightTableHead />

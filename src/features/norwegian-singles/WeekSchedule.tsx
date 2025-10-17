@@ -1,15 +1,17 @@
-import { QUALITY_SESSIONS, WEEKDAYS, QualitySession, formatDuration, formatDistance, shuffle } from './Utils';
+import CriticalSpeed from './CriticalSpeed';
+import { QUALITY_SESSIONS, WEEKDAYS, Duration, Speed, Distance, QualitySession, shuffle } from './Utils';
 
-const WARM_UP_DOWN_DURATION_HOURS = 20 / 60; // 20 minutes
+const WARM_UP_DURATION = Duration.fromMinutes(10);
+const WARM_DOWN_DURATION = Duration.fromMinutes(10);
+const WARM_UP_DOWN_DURATION = WARM_UP_DURATION.add(WARM_DOWN_DURATION);
 const QUALITY_VOLUME_RATIO = 0.225; // between 20% and 25%
-const MAX_LONG_RUN_DURATION_HOURS = 2.5;
+const MAX_LONG_RUN_DURATION = Duration.fromHours(2.5);
 const MAX_LONG_RUN_WEEKLY_RATIO = 0.30;
 const EASY_RUN_PACE_FACTOR = (1.15 + 1.30) / 2.0;
 const EASY_INTENSITY_FACTOR = 1.0 / EASY_RUN_PACE_FACTOR;
-const LT2_INTENSITY_FACTOR = 1.0;
 
-function tssVolumeToHours(targetTssVolume: number): number {
-  return targetTssVolume / (100 * ((1 - QUALITY_VOLUME_RATIO) * EASY_INTENSITY_FACTOR ** 2 + QUALITY_VOLUME_RATIO));
+function tssVolumeToDuration(targetTssVolume: number): Duration {
+  return Duration.fromHours(targetTssVolume / (100 * ((1 - QUALITY_VOLUME_RATIO) * EASY_INTENSITY_FACTOR ** 2 + QUALITY_VOLUME_RATIO)));
 }
 
 enum WeekDayType {
@@ -22,20 +24,20 @@ enum WeekDayType {
 abstract class WeekDay {
   readonly name: string;
   readonly type: WeekDayType;
-  readonly duration: number;
+  readonly speed: Speed;
+  readonly duration: Duration;
   readonly intensityFactor: number;
 
-  constructor(name: string, type: WeekDayType, duration: number, intensityFactor: number) {
+  constructor(name: string, type: WeekDayType, speed: Speed, duration: Duration, intensityFactor: number) {
     this.name = name;
     this.type = type;
+    this.speed = speed;
     this.duration = duration;
     this.intensityFactor = intensityFactor;
   }
 
   get tss() {
-    const durationHours = this.duration / 3600;
-
-    return 100 * durationHours * this.intensityFactor * this.intensityFactor;
+    return 100 * this.duration.toHours() * this.intensityFactor * this.intensityFactor;
   }
 
   get description() {
@@ -43,23 +45,25 @@ abstract class WeekDay {
   }
 
   get distance() {
-    return 0;
+    return Distance.fromMeters(this.speed.toMetersPerSecond() * this.duration.toSeconds());
   }
 }
 
 class RestDay extends WeekDay {
   constructor(name: string) {
-    super(name, WeekDayType.REST, 0, 0);
+    super(name, WeekDayType.REST, Speed.fromMetersPerSecond(0), Duration.fromSeconds(0), 0);
   }
 }
 
 class EasyDay extends WeekDay {
-  constructor(name: string, duration: number) {
-    super(name, WeekDayType.EASY, duration, EASY_INTENSITY_FACTOR);
+  constructor(name: string, speed: Speed, duration: Duration) {
+    super(name, WeekDayType.EASY, speed, duration, EASY_INTENSITY_FACTOR);
   }
 
   get description() {
-    if (this.duration >= 3600) {
+    if (this.duration.toHours() >= 1) {
+      const doublesDuration = this.duration.divide(2);
+
       return <table className='-inline'>
         <thead>
           <tr>
@@ -68,11 +72,11 @@ class EasyDay extends WeekDay {
         </thead>
         <tbody>
           <tr>
-            <td className='-fade'>{formatDuration(this.duration / 2)}</td>
+            <td className='-fade'>{doublesDuration.format()}</td>
             <td className='-left'>Morning</td>
           </tr>
           <tr>
-            <td className='-fade'>{formatDuration(this.duration / 2)}</td>
+            <td className='-fade'>{doublesDuration.format()}</td>
             <td className='-left'>Evening</td>
           </tr>
         </tbody>
@@ -84,38 +88,37 @@ class EasyDay extends WeekDay {
 }
 
 class LongRunDay extends WeekDay {
-  constructor(name: string, duration: number) {
-    super(name, WeekDayType.LONG_RUN, duration, EASY_INTENSITY_FACTOR);
+  constructor(name: string, speed: Speed, duration: Duration) {
+    super(name, WeekDayType.LONG_RUN, speed, duration, EASY_INTENSITY_FACTOR);
   }
 }
 
 class QualityDay extends WeekDay {
+  readonly repetitions: number;
   readonly session: QualitySession;
 
-  constructor(name: string, duration: number, intensityFactor: number, session: QualitySession) {
-    super(name, WeekDayType.QUALITY, duration, intensityFactor);
+  constructor(name: string, speed: Speed, duration: Duration, repetitions: number, intensityFactor: number, session: QualitySession) {
+    super(name, WeekDayType.QUALITY, speed, duration, intensityFactor);
 
+    this.repetitions = repetitions;
     this.session = session;
   }
 
   get description() {
-    const warmUpDuration = 3600 * WARM_UP_DOWN_DURATION_HOURS / 2;
-    const warmDownDuration = 3600 * WARM_UP_DOWN_DURATION_HOURS / 2;
-    const qualityDuration = this.duration - warmUpDuration - warmDownDuration;
-    const repetitions = (qualityDuration + this.session.rest) / (this.session.duration + this.session.rest);
+    const qualityDuration = this.duration.subtract(WARM_UP_DOWN_DURATION);
 
     return <table className='-inline'>
       <tbody>
         <tr>
-          <td className='-fade'>{formatDuration(warmUpDuration)}</td>
+          <td className='-fade'>{WARM_UP_DURATION.format()}</td>
           <td className='-left'>Warm up</td>
         </tr>
         <tr>
-          <td className='-fade'>{formatDuration(qualityDuration)}</td>
-          <td className='-left'>{Math.round(repetitions)} &times; {this.session.name}</td>
+          <td className='-fade'>{qualityDuration.format()}</td>
+          <td className='-left'>{Math.round(this.repetitions)} &times; {this.session.name}</td>
         </tr>
         <tr>
-          <td className='-fade'>{formatDuration(warmDownDuration)}</td>
+          <td className='-fade'>{WARM_DOWN_DURATION.format()}</td>
           <td className='-left'>Warm down</td>
         </tr>
       </tbody>
@@ -123,13 +126,13 @@ class QualityDay extends WeekDay {
   }
 }
 
-function topQualitySessions(count: number, targetQualityDuration: number): QualitySession[] {
+function topQualitySessions(count: number, targetQualityDuration: Duration): QualitySession[] {
   const qualitySessions = QUALITY_SESSIONS.slice();
 
   shuffle(qualitySessions);
   qualitySessions.sort((a, b) => {
-    const leftoverSecsA = targetQualityDuration % a.duration;
-    const leftoverSecsB = targetQualityDuration % b.duration;
+    const leftoverSecsA = targetQualityDuration.toSeconds() % a.interval.toSeconds();
+    const leftoverSecsB = targetQualityDuration.toSeconds() % b.interval.toSeconds();
 
     return leftoverSecsA - leftoverSecsB;
   });
@@ -144,53 +147,62 @@ function scheduleWeekDays(
   longRunDay: number,
   restingDays: number[],
   qualityDays: number[],
-  targetTssVolume: number
+  targetTssVolume: number,
+  criticalSpeed: CriticalSpeed
 ): WeekDay[]
 {
-  const targetVolumeHours = tssVolumeToHours(targetTssVolume);
+  const targetVolume = tssVolumeToDuration(targetTssVolume);
 
-  const warmUpDownVolumeHours = WARM_UP_DOWN_DURATION_HOURS * qualityDays.length;
-  const easyVolumeHours = targetVolumeHours * (1 - QUALITY_VOLUME_RATIO);
-  const longRunVolumeHours = Math.min(MAX_LONG_RUN_DURATION_HOURS, MAX_LONG_RUN_WEEKLY_RATIO * targetVolumeHours);
-  const qualityVolumeHours = targetVolumeHours * QUALITY_VOLUME_RATIO;
-  const qualitySessionDurationHours = qualityVolumeHours / qualityDays.length;
-  const qualitySessionDurationSecs = 3600 * qualitySessionDurationHours;
-  const qualitySessions = topQualitySessions(qualityDays.length, qualitySessionDurationSecs);
-  const qualityRestVolumeHours = qualitySessions.reduce((sum, session) => {
-      const repetitions = Math.floor(qualitySessionDurationSecs / session.duration);
+  const warmUpDownVolume = WARM_UP_DOWN_DURATION.multiply(qualityDays.length);
+  const easyVolume = targetVolume.multiply(1 - QUALITY_VOLUME_RATIO);
+  const longRunVolume = MAX_LONG_RUN_DURATION.min(targetVolume.multiply(MAX_LONG_RUN_WEEKLY_RATIO));
+  const qualityVolume = targetVolume.multiply(QUALITY_VOLUME_RATIO);
+  const qualitySessionDuration = qualityVolume.divide(qualityDays.length);
 
-      return sum + Math.max(session.rest * (repetitions - 1), 0) / 3600;
-  }, 0);
+  const qualitySessions = topQualitySessions(qualityDays.length, qualitySessionDuration);
+  const qualityRestVolume = qualitySessions.reduce((sum, session) => {
+    const repetitions = session.repetitions(qualitySessionDuration);
 
-  const effectiveEasyVolumeHours = Math.max(easyVolumeHours - longRunVolumeHours - warmUpDownVolumeHours - qualityRestVolumeHours, 0);
+    return sum.add(session.rest.multiply(repetitions - 1));
+  }, Duration.fromSeconds(0));
+
+  const effectiveEasyVolume = easyVolume.subtract(
+    longRunVolume.add(warmUpDownVolume).add(qualityRestVolume)
+  ).max(Duration.fromSeconds(0));
 
   return WEEKDAYS.map((day, index) => {
     if (restingDays.includes(index)) {
       return new RestDay(day);
     } else if (index === longRunDay) {
-      const longRunDuration = longRunVolumeHours * 3600;
-
-      return new LongRunDay(day, longRunDuration);
+      return new LongRunDay(day, criticalSpeed.easySpeed(), longRunVolume);
     } else if (qualityDays.includes(index)) {
       const qualitySession = qualitySessions[qualityDays.indexOf(index)];
-      const repetitions = Math.floor(qualitySessionDurationSecs / qualitySession.duration);
+      const repetitions = qualitySession.repetitions(qualitySessionDuration);
 
-      const warmUpDownDuration = WARM_UP_DOWN_DURATION_HOURS * 3600;
-      const qualityDuration = repetitions * qualitySession.duration;
-      const restDuration = Math.max(0, (repetitions - 1) * qualitySession.rest);
-      const totalSessionDuration = qualityDuration + warmUpDownDuration + restDuration;
-      const intensityFactor = (
-        (warmUpDownDuration / totalSessionDuration) * EASY_INTENSITY_FACTOR +
-        (qualityDuration / totalSessionDuration) * LT2_INTENSITY_FACTOR +
-        (restDuration / totalSessionDuration) * EASY_INTENSITY_FACTOR
+      const qualityDuration = qualitySession.interval.multiply(repetitions);
+      const qualityIntensityFactor = qualitySession.intensityFactor(criticalSpeed);
+      const restDuration = qualitySession.rest.multiply((repetitions - 1));
+      const totalSessionDuration = WARM_UP_DOWN_DURATION.add(qualityDuration).add(restDuration);
+      const averageSpeed = Speed.fromMetersPerSecond(
+        (
+          WARM_UP_DOWN_DURATION.toSeconds() * criticalSpeed.easySpeed().toMetersPerSecond() +
+          qualityDuration.toSeconds() * qualitySession.speed(criticalSpeed).toMetersPerSecond() +
+          restDuration.toSeconds() * criticalSpeed.easySpeed().toMetersPerSecond()
+        ) / totalSessionDuration.toSeconds()
       );
 
-      return new QualityDay(day, totalSessionDuration, intensityFactor, qualitySession);
+      const averageIntensityFactor = (
+        WARM_UP_DOWN_DURATION.toSeconds() * EASY_INTENSITY_FACTOR +
+        qualityDuration.toSeconds() * qualityIntensityFactor +
+        restDuration .toSeconds() * EASY_INTENSITY_FACTOR
+      ) / totalSessionDuration.toSeconds();
+
+      return new QualityDay(day, averageSpeed, totalSessionDuration, repetitions, averageIntensityFactor, qualitySession);
     } else {
       const numberOfEasyDays = WEEKDAYS.length - restingDays.length - qualityDays.length - 1;
-      const easyRunDuration = (effectiveEasyVolumeHours * 3600) / numberOfEasyDays;
+      const easyRunDuration = effectiveEasyVolume.divide(numberOfEasyDays);
 
-      return new EasyDay(day, easyRunDuration);
+      return new EasyDay(day, criticalSpeed.easySpeed(), easyRunDuration);
     }
   });
 }
@@ -200,16 +212,18 @@ interface WeekScheduleProps {
   restingDays: number[];
   qualityDays: number[];
   targetTssVolume: number;
+  criticalSpeed: CriticalSpeed
 }
 
 export default function WeekSchedule({
   longRunDay,
   restingDays,
   qualityDays,
-  targetTssVolume: targetVolume
+  targetTssVolume: targetVolume,
+  criticalSpeed
 }: WeekScheduleProps)
 {
-  const weekDays = scheduleWeekDays(longRunDay, restingDays, qualityDays, targetVolume);
+  const weekDays = scheduleWeekDays(longRunDay, restingDays, qualityDays, targetVolume, criticalSpeed);
 
   return (
     <table>
@@ -242,22 +256,22 @@ export default function WeekSchedule({
           <td>Duration</td>
           {weekDays.map((day) => (
             <td key={day.name} className='-center -small -fade'>
-              {day.duration > 0 && formatDuration(day.duration)}
+              {day.duration.toSeconds() > 0 && day.duration.format()}
             </td>
           ))}
           <td className='-small -fade -narrow'>
-            {formatDuration(weekDays.reduce((sum, day) => sum + day.duration, 0))}
+            {weekDays.reduce((sum, day) => sum.add(day.duration), Duration.fromSeconds(0)).format()}
           </td>
         </tr>
         <tr>
           <td>Distance</td>
           {weekDays.map((day) => (
             <td key={day.name} className='-center -small -fade'>
-              {day.distance > 0 && <> {formatDistance(day.distance)} km</>}
+              {day.distance.toMeters() > 0 && <> {day.distance.format()} km</>}
             </td>
           ))}
           <td className='-small -fade -narrow'>
-            {formatDistance(weekDays.reduce((sum, day) => sum + day.distance, 0))} km
+            {weekDays.reduce((sum, day) => sum.add(day.distance), Distance.fromMeters(0)).format()} km
           </td>
         </tr>
         <tr>

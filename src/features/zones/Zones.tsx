@@ -24,20 +24,22 @@ function Zones() {
   };
 
   return <>
-    <form onSubmit={e => updateZoneValues(e)} className='-multiple'>
-      <label>
-        <span>Resting</span>
-        <input type='number' name='resting' defaultValue={DEFAULT_RESTING} />
-      </label>
-      <label>
-        <span>Maximum</span>
-        <input type='number' name='maximum' defaultValue={DEFAULT_MAXIMUM} />
-      </label>
-      <label>
-        <span>Lactate Threshold</span>
-        <input type='number' name='lactateThreshold' defaultValue={DEFAULT_LACTATE_THRESHOLD} />
-      </label>
-      <button type='submit'>Calculate zones</button>
+    <form onSubmit={e => updateZoneValues(e)}>
+      <section className='-aligned-form'>
+        <label>
+          <span>Resting</span>
+          <input type='number' name='resting' defaultValue={DEFAULT_RESTING} />
+        </label>
+        <label>
+          <span>Maximum</span>
+          <input type='number' name='maximum' defaultValue={DEFAULT_MAXIMUM} />
+        </label>
+        <label>
+          <span>Lactate Threshold</span>
+          <input type='number' name='lactateThreshold' defaultValue={DEFAULT_LACTATE_THRESHOLD} />
+        </label>
+        <button type='submit'>Calculate zones</button>
+      </section>
     </form>
     <hr />
     <HeartZones resting={resting} maximum={maximum} lactateThreshold={lactateThreshold} />

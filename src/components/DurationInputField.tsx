@@ -16,7 +16,7 @@ function parseDuration(input: string): number {
 
 interface DurationInputFieldProps {
   name: string;
-  defaultValue: string | null;
+  defaultValue?: string | null;
   className?: string;
 }
 

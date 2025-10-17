@@ -50,7 +50,7 @@ function PaceTable() {
     <p>
       This table shows the time it would take to run a certain distance at a certain pace.
     </p>
-    <form onSubmit={e => addPace(e)} className='-single'>
+    <form onSubmit={e => addPace(e)} className='-inline'>
       <label>
           <span>Pace</span>
           <DurationInputField name="pace" defaultValue={'04:00'} />
