@@ -4,7 +4,7 @@ import CriticalSpeed from "./CriticalSpeed";
 interface QualitySessionsProps {
   criticalSpeed: CriticalSpeed;
 }
-  
+
 export default function QualitySessions({ criticalSpeed }: QualitySessionsProps) {
   return <>
     <p className='-bold'>Quality Session</p>
