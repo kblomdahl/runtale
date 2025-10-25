@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks';
 import Duration from '../utils/Duration';
+import styles from '../styles/shared.module.css';
 
 function prettyPrintDuration(input: string): string {
   return input
@@ -40,7 +41,7 @@ function DurationInputField(props: DurationInputFieldProps) {
       <input
         type="text"
         value={value}
-        className={['-duration', className].join(' ').trim()}
+        className={[styles.durationInput, className].join(' ').trim()}
         onChange={handleChange}
         placeholder="hh:mm:ss"
         maxLength={8}

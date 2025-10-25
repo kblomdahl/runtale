@@ -1,3 +1,5 @@
+import styles from '../../styles/shared.module.css';
+
 function calculateLactateThreshold(resting: number, lactateThreshold: number) {
   return [
     resting,
@@ -76,7 +78,7 @@ function HeartZones({ resting, maximum, lactateThreshold }: HeartZonesProps) {
           <th>MHR%</th>
           <th>HRR%</th>
           <th>LTHR%</th>
-          <th className="-left -wide">Benefits</th>
+          <th className={`${styles.left} ${styles.wide}`}>Benefits</th>
         </tr>
       </thead>
       <tbody>
@@ -87,7 +89,7 @@ function HeartZones({ resting, maximum, lactateThreshold }: HeartZonesProps) {
               <td>{mhr.lower.toFixed(0)} - {mhr.upper.toFixed(0)}</td>
               <td>{hrr.lower.toFixed(0)} - {hrr.upper.toFixed(0)}</td>
               <td>{lthr.lower.toFixed(0)} - {lthr.upper.toFixed(0)}</td>
-              <td className="-left">{benefit}</td>
+              <td className={styles.left}>{benefit}</td>
             </tr>;
           })
         }

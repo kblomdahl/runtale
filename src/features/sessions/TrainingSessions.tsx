@@ -1,4 +1,5 @@
 import { Fragment } from "preact";
+import styles from '../../styles/shared.module.css';
 
 const ANAEROBIC_SESSIONS = [
   {
@@ -39,7 +40,7 @@ const LOW_AEROBIC_SESSIONS = [
 
 function TrainingSession(props: { name: string, description: string }) {
   return <p>
-    <span className="-bold">{props.name}</span>
+    <span className={styles.bold}>{props.name}</span>
     <br />
     {props.description}
   </p>;
@@ -55,7 +56,7 @@ function TrainingSessions() {
   return <>
     {session_types.map(({ name, sessions }, index) => <Fragment key={name}>
         {index > 0 && <hr />}
-        <p className="-bold">
+        <p className={styles.bold}>
           {name}
         </p>
         {sessions.map(session => (

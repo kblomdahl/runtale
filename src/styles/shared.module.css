@@ -1,0 +1,110 @@
+/**
+ * Shared Utilities Module
+ * Reusable utility classes for common patterns across components
+ */
+
+/* Layout utilities */
+.responsiveContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm) var(--spacing-lg);
+}
+
+.flex {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.inlineBlock {
+  display: inline-block;
+}
+
+.widthFull {
+  width: 100%;
+}
+
+/* Form utilities */
+.alignedForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  width: var(--form-width);
+}
+
+.alignedForm label {
+  display: flex;
+  justify-content: space-between;
+}
+
+.inlineForm input {
+  margin: 0 var(--spacing-xs);
+}
+
+.inlineForm button {
+  height: var(--button-height-inline);
+}
+
+.durationInput {
+  text-align: right;
+  width: var(--input-width-duration);
+}
+
+/* Table utilities */
+.inlineTable {
+  display: inline-table;
+  margin: 0;
+}
+
+.inlineTable tr {
+  border: none;
+}
+
+.inlineTable tbody tr:hover {
+  background-color: transparent;
+}
+
+.inlineTable :global(td.left) {
+  padding-left: var(--spacing-xs);
+}
+
+/* Table cell alignment */
+.left {
+  text-align: left;
+  padding-left: var(--spacing-sm);
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+/* Table column sizing */
+.wide {
+  width: var(--table-column-width-wide);
+}
+
+.narrow {
+  width: var(--table-column-width-narrow);
+}
+
+/* Text modifiers */
+.bold {
+  font-weight: var(--font-weight-bold);
+}
+
+.fade {
+  opacity: var(--opacity-fade);
+}
+
+.small {
+  font-size: var(--font-size-small);
+}
+
+/* Row modifiers */
+.highlight {
+  font-weight: var(--font-weight-bold);
+  animation: flash 3s ease-out;
+}

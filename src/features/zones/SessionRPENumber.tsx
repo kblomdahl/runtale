@@ -1,4 +1,5 @@
 import { Fragment } from "preact";
+import styles from '../../styles/shared.module.css';
 
 const RPE_TABLE = [
   { rpe: 1, intensity: 'Very Easy' },
@@ -34,7 +35,7 @@ function SessionRPENumber() {
             </tr>
             { breakpoint && (
               <tr key={breakpoint}>
-                <td colSpan={2} className="-center -bold">{breakpoint}</td>
+                <td colSpan={2} className={`${styles.center} ${styles.bold}`}>{breakpoint}</td>
               </tr>
             )}
           </Fragment>;

@@ -1,0 +1,38 @@
+:root {
+  --font-family-base: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-size-base: 1em;
+  --font-size-small: 0.75em;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+  --line-height-base: 1.5;
+
+  --color-text-primary: rgba(255, 255, 255, 0.87);
+  --color-bg-primary: #242424;
+  --color-bg-secondary: #333;
+  --color-border-primary: #555;
+  --color-border-secondary: rgba(255, 255, 255, 0.10);
+  --color-border-hr: rgba(255, 255, 255, 0.20);
+  --color-hover-bg: rgba(255, 255, 255, 0.05);
+
+  --spacing-xs: 0.5em;
+  --spacing-sm: 1em;
+  --spacing-md: 2em;
+  --spacing-lg: 4em;
+
+  --container-padding: 1em;
+  --header-padding-block: 0.5em;
+  --header-padding-inline: 1em;
+  --nav-gap: 2em;
+  --form-width: 300px;
+  --input-width-number: 5em;
+  --input-width-duration: 5em;
+  --button-height-inline: 24px;
+  --table-column-width-default: 8em;
+  --table-column-width-wide: 24em;
+  --table-column-width-narrow: 5em;
+
+  --opacity-fade: 0.5;
+
+  --min-viewport-width: 320px;
+  --color-scheme: light dark;
+}

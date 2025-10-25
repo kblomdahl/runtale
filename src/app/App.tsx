@@ -5,7 +5,6 @@ import Sessions from '../features/sessions/Sessions';
 import Strength from '../features/strength/Strength';
 import NorwegianSingles from '../features/norwegian-singles/NorwegianSingles';
 import { useEffect, useState } from 'preact/hooks';
-import './App.css'
 
 function App() {
   const [route, setRoute] = useState(window.location.hash.slice(1) || '/');

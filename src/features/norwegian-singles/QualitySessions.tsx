@@ -1,5 +1,6 @@
 import { QUALITY_SESSIONS } from "./QualitySession";
 import CriticalSpeed from "./CriticalSpeed";
+import styles from '../../styles/shared.module.css';
 
 interface QualitySessionsProps {
   criticalSpeed: CriticalSpeed;
@@ -7,7 +8,7 @@ interface QualitySessionsProps {
 
 export default function QualitySessions({ criticalSpeed }: QualitySessionsProps) {
   return <>
-    <p className='-bold'>Quality Session</p>
+    <p className={styles.bold}>Quality Session</p>
     <p>
       This table show the time based interval sessions for your quality days.
 
@@ -23,20 +24,20 @@ export default function QualitySessions({ criticalSpeed }: QualitySessionsProps)
       <thead>
         <tr>
           <th>Format</th>
-          <th className='-center'>Interval Duration</th>
-          <th className='-center'>Rest Duration</th>
-          <th className='-right'>Pace (min/km)</th>
-          <th className='-left -wide'>Description</th>
+          <th className={styles.center}>Interval Duration</th>
+          <th className={styles.center}>Rest Duration</th>
+          <th className={styles.right}>Pace (min/km)</th>
+          <th className={`${styles.left} ${styles.wide}`}>Description</th>
         </tr>
       </thead>
       <tbody>
         {QUALITY_SESSIONS.map(session => (
           <tr key={session.name}>
             <td>{session.name}</td>
-            <td className='-center'>{session.interval.format(2)}</td>
-            <td className='-center'>{session.rest.format(2)}</td>
-            <td className='-right'>{session.speed(criticalSpeed).toMinutesPerKilometer()}</td>
-            <td className='-left -wide'>{session.paceDescription}</td>
+            <td className={styles.center}>{session.interval.format(2)}</td>
+            <td className={styles.center}>{session.rest.format(2)}</td>
+            <td className={styles.right}>{session.speed(criticalSpeed).toMinutesPerKilometer()}</td>
+            <td className={`${styles.left} ${styles.wide}`}>{session.paceDescription}</td>
           </tr>
         ))}
       </tbody>
