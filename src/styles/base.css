@@ -35,7 +35,7 @@ header nav ul {
   margin: 0;
 }
 
-form, p, table {
+p {
   margin: var(--spacing-sm);
 }
 
@@ -50,15 +50,15 @@ input[type="number"] {
 
 table {
   border-collapse: collapse;
+  margin: var(--spacing-sm);
+}
+
+th, td {
+  text-align: right;
 }
 
 th {
-  text-align: right;
   width: var(--table-column-width-default);
-}
-
-td {
-  text-align: right;
 }
 
 tr {

@@ -3,7 +3,8 @@ import { useMemo } from "preact/hooks";
 import { RPE_TABLE } from './RPETable';
 import useLocalStorage from "../../utils/UseLocalStorage";
 import { getNumberFromForm } from '../../utils/Form';
-import styles from '../../styles/shared.module.css';
+import sharedStyles from '../../styles/shared.module.css';
+import styles from './WeightTable.module.css';
 
 const INPUT_WEIGHT = 'weight';
 const INPUT_REPS = 'reps';
@@ -116,8 +117,8 @@ function WeightTable() {
 
   return <>
     <p>This table shows the weight to maintain a given RPE and number of repetitions based on an estimated one-rep max.</p>
-    <form onSubmit={updateRepRPEValues}>
-      <section className={styles.form}>
+    <form onSubmit={updateRepRPEValues} className={styles.form}>
+      <section className={sharedStyles.form}>
         <label>
           <span>Weight</span>
           <input type='number' step={0.5} name={INPUT_WEIGHT} defaultValue={weight} />

@@ -3,7 +3,8 @@ import LactateZones from "./LactateZones";
 import SessionRPENumber from './SessionRPENumber';
 import useLocalStorage from '../../utils/UseLocalStorage';
 import { getNumberFromForm } from '../../utils/Form';
-import styles from '../../styles/shared.module.css';
+import sharedStyles from '../../styles/shared.module.css';
+import styles from './Zones.module.css';
 
 const INPUT_RESTING = 'resting';
 const INPUT_MAXIMUM = 'maximum';
@@ -28,8 +29,8 @@ function Zones() {
   };
 
   return <>
-    <form onSubmit={updateZoneValues}>
-      <section className={styles.form}>
+    <form onSubmit={updateZoneValues} className={styles.form}>
+      <section className={sharedStyles.form}>
         <label>
           <span>Resting</span>
           <input type='number' name={INPUT_RESTING} defaultValue={resting} />
