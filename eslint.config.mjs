@@ -18,7 +18,12 @@ export default tseslint.config(
       react.configs.flat['jsx-runtime'],
     ]
   },
-  reactHooks.configs['recommended-latest'],
+  {
+    plugins: {
+      'react-hooks': reactHooks,
+    },
+    rules: reactHooks.configs.recommended.rules,
+  },
   reactRefresh.configs.vite,
   tseslint.configs.recommended
 );
