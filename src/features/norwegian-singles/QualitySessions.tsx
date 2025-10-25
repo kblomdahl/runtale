@@ -8,7 +8,7 @@ interface QualitySessionsProps {
 
 export default function QualitySessions({ criticalSpeed }: QualitySessionsProps) {
   return <>
-    <p className={styles.bold}>Quality Session</p>
+    <p className={styles.text__heading}>Quality Session</p>
     <p>
       This table show the time based interval sessions for your quality days.
 
@@ -24,20 +24,20 @@ export default function QualitySessions({ criticalSpeed }: QualitySessionsProps)
       <thead>
         <tr>
           <th>Format</th>
-          <th className={styles.center}>Interval Duration</th>
-          <th className={styles.center}>Rest Duration</th>
-          <th className={styles.right}>Pace (min/km)</th>
-          <th className={`${styles.left} ${styles.wide}`}>Description</th>
+          <th className={styles.table__headerCenter}>Interval Duration</th>
+          <th className={styles.table__headerCenter}>Rest Duration</th>
+          <th>Pace (min/km)</th>
+          <th className={`${styles.table__headerLabel} ${styles.table__colWide}`}>Description</th>
         </tr>
       </thead>
       <tbody>
         {QUALITY_SESSIONS.map(session => (
           <tr key={session.name}>
             <td>{session.name}</td>
-            <td className={styles.center}>{session.interval.format(2)}</td>
-            <td className={styles.center}>{session.rest.format(2)}</td>
-            <td className={styles.right}>{session.speed(criticalSpeed).toMinutesPerKilometer()}</td>
-            <td className={`${styles.left} ${styles.wide}`}>{session.paceDescription}</td>
+            <td className={styles.table__cell}>{session.interval.format(2)}</td>
+            <td className={styles.table__cell}>{session.rest.format(2)}</td>
+            <td className={styles.table__cellValue}>{session.speed(criticalSpeed).toMinutesPerKilometer()}</td>
+            <td className={`${styles.table__cellLabel} ${styles.table__colWide}`}>{session.paceDescription}</td>
           </tr>
         ))}
       </tbody>

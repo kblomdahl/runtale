@@ -88,7 +88,7 @@ function WeightTableBody({ oneRepMax }: WeightTableBodyProps) {
         const pct = array[index + reserve]?.pct;
 
         return <Fragment key={rpe}>
-          <td className={styles.fade}>{pct && `${Math.round(pct * 100).toString()}%`}</td>
+          <td className={styles.text__secondary}>{pct && `${Math.round(pct * 100).toString()}%`}</td>
           <td>{pct && Math.round(oneRepMax * pct)}</td>
         </Fragment>;
       })}
@@ -117,7 +117,7 @@ function WeightTable() {
   return <>
     <p>This table shows the weight to maintain a given RPE and number of repetitions based on an estimated one-rep max.</p>
     <form onSubmit={updateRepRPEValues}>
-      <section className={styles.alignedForm}>
+      <section className={styles.form}>
         <label>
           <span>Weight</span>
           <input type='number' step={0.5} name={INPUT_WEIGHT} defaultValue={weight} />

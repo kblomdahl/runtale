@@ -40,7 +40,7 @@ const LOW_AEROBIC_SESSIONS = [
 
 function TrainingSession(props: { name: string, description: string }) {
   return <p>
-    <span className={styles.bold}>{props.name}</span>
+    <span className={styles.text__label}>{props.name}</span>
     <br />
     {props.description}
   </p>;
@@ -56,7 +56,7 @@ function TrainingSessions() {
   return <>
     {session_types.map(({ name, sessions }, index) => <Fragment key={name}>
         {index > 0 && <hr />}
-        <p className={styles.bold}>
+        <p className={styles.text__heading}>
           {name}
         </p>
         {sessions.map(session => (

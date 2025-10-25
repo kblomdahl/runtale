@@ -29,7 +29,7 @@ function Zones() {
 
   return <>
     <form onSubmit={updateZoneValues}>
-      <section className={styles.alignedForm}>
+      <section className={styles.form}>
         <label>
           <span>Resting</span>
           <input type='number' name={INPUT_RESTING} defaultValue={resting} />

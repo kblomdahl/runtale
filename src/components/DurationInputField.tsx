@@ -41,7 +41,7 @@ function DurationInputField(props: DurationInputFieldProps) {
       <input
         type="text"
         value={value}
-        className={[styles.durationInput, className].join(' ').trim()}
+        className={[styles.input__duration, className].join(' ').trim()}
         onChange={handleChange}
         placeholder="hh:mm:ss"
         maxLength={8}

@@ -78,7 +78,7 @@ function HeartZones({ resting, maximum, lactateThreshold }: HeartZonesProps) {
           <th>MHR%</th>
           <th>HRR%</th>
           <th>LTHR%</th>
-          <th className={`${styles.left} ${styles.wide}`}>Benefits</th>
+          <th className={`${styles.table__headerLabel} ${styles.table__colWide}`}>Benefits</th>
         </tr>
       </thead>
       <tbody>
@@ -89,7 +89,7 @@ function HeartZones({ resting, maximum, lactateThreshold }: HeartZonesProps) {
               <td>{mhr.lower.toFixed(0)} - {mhr.upper.toFixed(0)}</td>
               <td>{hrr.lower.toFixed(0)} - {hrr.upper.toFixed(0)}</td>
               <td>{lthr.lower.toFixed(0)} - {lthr.upper.toFixed(0)}</td>
-              <td className={styles.left}>{benefit}</td>
+              <td className={styles.table__cellLabel}>{benefit}</td>
             </tr>;
           })
         }
