@@ -12,9 +12,6 @@ dist
 dist-ssr
 *.local
 
-# Generated files
-public/models/*.json
-
 # Editor directories and files
 .direnv
 .vscode/*
