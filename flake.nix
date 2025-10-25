@@ -16,6 +16,7 @@
             nodejs
             nodePackages.npm
             git
+            process-compose
           ];
 
           NODE_ENV = "development";
