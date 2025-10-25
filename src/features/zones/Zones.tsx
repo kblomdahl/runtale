@@ -1,8 +1,12 @@
-import type { JSX } from "preact";
 import HeartZones from "./HeartZones";
 import LactateZones from "./LactateZones";
 import SessionRPENumber from './SessionRPENumber';
 import useLocalStorage from '../../utils/UseLocalStorage';
+import { getNumberFromForm } from '../../utils/Form';
+
+const INPUT_RESTING = 'resting';
+const INPUT_MAXIMUM = 'maximum';
+const INPUT_LACTATE_THRESHOLD = 'lactateThreshold';
 
 export const DEFAULT_RESTING = 42;
 export const DEFAULT_MAXIMUM = 183;
@@ -13,31 +17,29 @@ function Zones() {
   const [maximum, setMaximum] = useLocalStorage('Zones/maximum', DEFAULT_MAXIMUM);
   const [lactateThreshold, setLactateThreshold] = useLocalStorage('Zones/lactateThreshold', DEFAULT_LACTATE_THRESHOLD);
 
-  const updateZoneValues = (e: JSX.TargetedEvent<HTMLFormElement>) => {
-    const form = e.target as HTMLFormElement;
-    setResting((form.resting as HTMLInputElement).valueAsNumber);
-    setMaximum((form.maximum as HTMLInputElement).valueAsNumber);
-    setLactateThreshold((form.lactateThreshold as HTMLInputElement).valueAsNumber);
-
+  const updateZoneValues = (e: SubmitEvent) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
 
-    return true;
+    setResting(getNumberFromForm(formData, INPUT_RESTING));
+    setMaximum(getNumberFromForm(formData, INPUT_MAXIMUM));
+    setLactateThreshold(getNumberFromForm(formData, INPUT_LACTATE_THRESHOLD));
   };
 
   return <>
-    <form onSubmit={e => updateZoneValues(e)}>
+    <form onSubmit={updateZoneValues}>
       <section className='-aligned-form'>
         <label>
           <span>Resting</span>
-          <input type='number' name='resting' defaultValue={resting} />
+          <input type='number' name={INPUT_RESTING} defaultValue={resting} />
         </label>
         <label>
           <span>Maximum</span>
-          <input type='number' name='maximum' defaultValue={maximum} />
+          <input type='number' name={INPUT_MAXIMUM} defaultValue={maximum} />
         </label>
         <label>
           <span>Lactate Threshold</span>
-          <input type='number' name='lactateThreshold' defaultValue={lactateThreshold} />
+          <input type='number' name={INPUT_LACTATE_THRESHOLD} defaultValue={lactateThreshold} />
         </label>
         <button type='submit'>Calculate zones</button>
       </section>

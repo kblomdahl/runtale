@@ -1,7 +1,9 @@
 import { useState } from 'preact/hooks';
-import type { JSX } from 'preact';
 import DurationInputField from '../../components/DurationInputField';
 import Duration from '../../utils/Duration';
+import { getNumberFromForm } from '../../utils/Form';
+
+const INPUT_PACE = 'pace';
 
 const DEFAULT_PACES = Array.from({ length: 10 }, (_, i) => 390 - i * 10)
   .concat(Array.from({ length: 24 }, (_, i) => 295 - i * 5));
@@ -35,27 +37,25 @@ function formatDecimals(x: number) {
 function PaceTable() {
   const [paces, setPaces] = useState(DEFAULT_PACES);
   const [customPaces, setCustomPaces] = useState(new Set());
-  const addPace = (e: JSX.TargetedEvent<HTMLFormElement>) => {
-    const form = e.target as HTMLFormElement;
-    const newPace = +(form.pace as HTMLInputElement).value;
+  const addPace = (e: SubmitEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const newPace = getNumberFromForm(formData, INPUT_PACE);
     const newPaces = [...new Set([...paces, newPace])];
 
     newPaces.sort((a, b) => b - a);
     setPaces(newPaces);
     setCustomPaces(new Set([...customPaces, newPace]));
-    e.preventDefault();
-
-    return true;
   };
 
   return <>
     <p>
       This table shows the time it would take to run a certain distance at a certain pace.
     </p>
-    <form onSubmit={e => addPace(e)} className='-inline'>
+    <form onSubmit={addPace} className='-inline'>
       <label>
           <span>Pace</span>
-          <DurationInputField name="pace" defaultValue={Duration.fromMinutes(4)} />
+          <DurationInputField name={INPUT_PACE} defaultValue={Duration.fromMinutes(4)} />
       </label>
       <button type='submit'>Add to table</button>
     </form>
