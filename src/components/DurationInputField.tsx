@@ -1,5 +1,4 @@
 import { useState } from 'preact/hooks';
-import type { JSX } from 'preact';
 import Duration from '../utils/Duration';
 
 function prettyPrintDuration(input: string): string {
@@ -27,7 +26,7 @@ function DurationInputField(props: DurationInputFieldProps) {
   const prettyPrintDefaultValue = defaultValue?.format() || '';
   const [value, setValue] = useState(prettyPrintDefaultValue);
 
-  const handleChange = (e: JSX.TargetedEvent<HTMLInputElement>) => {
+  const handleChange = (e: Event) => {
     setValue(prettyPrintDuration((e.target as HTMLInputElement).value));
   };
 

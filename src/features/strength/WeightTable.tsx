@@ -1,8 +1,12 @@
 import { Fragment } from "preact";
 import { useMemo } from "preact/hooks";
-import type { JSX } from "preact";
 import { RPE_TABLE } from './RPETable';
 import useLocalStorage from "../../utils/UseLocalStorage";
+import { getNumberFromForm } from '../../utils/Form';
+
+const INPUT_WEIGHT = 'weight';
+const INPUT_REPS = 'reps';
+const INPUT_RPE = 'rpe';
 
 const DEFAULT_WEIGHT = 55.0;
 const DEFAULT_REPS = 8.0;
@@ -96,35 +100,34 @@ function WeightTable() {
   const [reps, setReps] = useLocalStorage('WeightTable/reps', DEFAULT_REPS);
   const [rpe, setRpe] = useLocalStorage('WeightTable/rpe', DEFAULT_RPE);
   const oneRepMax = useMemo(() => calculateOneRepMax(weight, reps, rpe), [weight, reps, rpe]);
-  const updateRepRPEValues = (e: JSX.TargetedEvent<HTMLFormElement>) => {
-    const form = e.target as HTMLFormElement;
-    const weight = (form.weight as HTMLInputElement).valueAsNumber;
-    const reps = (form.reps as HTMLInputElement).valueAsNumber;
-    const rpe = (form.rpe as HTMLInputElement).valueAsNumber;
+  const updateRepRPEValues = (e: SubmitEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+
+    const weight = getNumberFromForm(formData, INPUT_WEIGHT);
+    const reps = getNumberFromForm(formData, INPUT_REPS);
+    const rpe = getNumberFromForm(formData, INPUT_RPE);
 
     setWeight(weight);
     setReps(reps);
     setRpe(rpe);
-    e.preventDefault();
-
-    return true;
   };
 
   return <>
     <p>This table shows the weight to maintain a given RPE and number of repetitions based on an estimated one-rep max.</p>
-    <form onSubmit={e => updateRepRPEValues(e)}>
+    <form onSubmit={updateRepRPEValues}>
       <section className='-aligned-form'>
         <label>
           <span>Weight</span>
-          <input type='number' step={0.5} name='weight' defaultValue={weight} />
+          <input type='number' step={0.5} name={INPUT_WEIGHT} defaultValue={weight} />
         </label>
         <label>
           <span>Repetitions</span>
-          <input type='number' name='reps' defaultValue={reps} />
+          <input type='number' name={INPUT_REPS} defaultValue={reps} />
         </label>
         <label>
           <span>RPE Number</span>
-          <input type='number' step={0.25} name='rpe' defaultValue={rpe} />
+          <input type='number' step={0.25} name={INPUT_RPE} defaultValue={rpe} />
         </label>
         <button type='submit'>Calculate weights</button>
       </section>

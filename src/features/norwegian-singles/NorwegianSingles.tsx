@@ -1,5 +1,4 @@
 import { useMemo } from 'preact/hooks';
-import type { JSX } from 'preact';
 
 import Distance from '../../utils/Distance';
 import Duration from '../../utils/Duration';
@@ -10,6 +9,13 @@ import { WEEKDAYS } from './Utils';
 import DurationInputField from '../../components/DurationInputField';
 import CriticalSpeed from './CriticalSpeed';
 import useLocalStorage from '../../utils/UseLocalStorage';
+import { getNumberFromForm, getNumbersFromForm } from '../../utils/Form';
+
+const INPUT_TARGET_TRAINING_LOAD = 'targetTrainingLoad';
+const INPUT_LONG_RUN_DAY = 'longRunDay';
+const INPUT_RESTING_DAYS = 'restingDays';
+const INPUT_DISTANCES = 'distances[]';
+const INPUT_TIMES = 'times[]';
 
 const DEFAULT_TARGET_VOLUME = 350;
 const DEFAULT_LONG_RUN_DAY = 6; // Sunday
@@ -38,27 +44,25 @@ function NorwegianSingles() {
     return scheduleQualityDays(days);
   }, [restingDays, longRunDay]);
 
-  const setTrainingParameters = (e: JSX.TargetedEvent<HTMLFormElement>) => {
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const targetTrainingLoad = (form.targetTrainingLoad as HTMLInputElement).valueAsNumber;
-    const longRunDay = +(form.longRunDay as HTMLSelectElement).value;
-    const restingDays = Array.from((form.restingDays as HTMLSelectElement).selectedOptions).map(option => +option.value);
-    const distances = formData.getAll('distances[]').map(value => Distance.fromMeters(Number(value))) as [Distance, Distance];
-    const times = formData.getAll('times[]').map(value => Duration.fromSeconds(Number(value))) as [Duration, Duration];
+  const setTrainingParameters = (e: SubmitEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+
+    const targetTrainingLoad = getNumberFromForm(formData, INPUT_TARGET_TRAINING_LOAD);
+    const longRunDay = getNumberFromForm(formData, INPUT_LONG_RUN_DAY);
+    const restingDays = getNumbersFromForm(formData, INPUT_RESTING_DAYS);
+    const distances = getNumbersFromForm(formData, INPUT_DISTANCES).map(value => Distance.fromMeters(value)) as [Distance, Distance];
+    const times = getNumbersFromForm(formData, INPUT_TIMES).map(value => Duration.fromSeconds(value)) as [Duration, Duration];
 
     setTargetVolume(targetTrainingLoad);
     setLongRunDay(longRunDay);
     setRestingDays(restingDays);
     setDistances(distances);
     setTimes(times);
-    e.preventDefault();
-
-    return true;
   };
 
   return <>
-    <form onSubmit={e => setTrainingParameters(e)} className='-inline-block'>
+    <form onSubmit={setTrainingParameters} className='-inline-block'>
       <div className='-responsive-container'>
         <section className='-aligned-form -half'>
           <b>
@@ -66,19 +70,19 @@ function NorwegianSingles() {
           </b>
           <label>
             <span>Target Training Load (ATL)</span>
-            <input type='number' name='targetTrainingLoad' defaultValue={DEFAULT_TARGET_VOLUME} />
+            <input type='number' name={INPUT_TARGET_TRAINING_LOAD} defaultValue={DEFAULT_TARGET_VOLUME} />
           </label>
           <label>
             <span>Long Run Day</span>
-            <select name='longRunDay' defaultValue={DEFAULT_LONG_RUN_DAY}>
+            <select name={INPUT_LONG_RUN_DAY}>
               {WEEKDAYS.map((day, index) => (
-                <option key={day} value={index}>{day}</option>
+                <option key={day} value={index} selected={DEFAULT_LONG_RUN_DAY === index}>{day}</option>
               ))}
             </select>
           </label>
           <label>
             <span>Resting Days</span>
-            <select name='restingDays' multiple>
+            <select name={INPUT_RESTING_DAYS} multiple>
               {WEEKDAYS.map((day, index) => (
                 <option key={day} value={index} selected={DEFAULT_RESTING_DAYS.includes(index)}>{day}</option>
               ))}
@@ -92,15 +96,15 @@ function NorwegianSingles() {
           <label>
             <span>Time Trial 1</span>
             <span className='-flex'>
-              <input type='number' name='distances[]' defaultValue={distances[0].toMeters()} placeholder={'1609.34'} width='40%' />
-              <DurationInputField name='times[]' defaultValue={times[0]} />
+              <input type='number' name={INPUT_DISTANCES} defaultValue={distances[0].toMeters()} placeholder={'1609.34'} width='40%' />
+              <DurationInputField name={INPUT_TIMES} defaultValue={times[0]} />
             </span>
           </label>
           <label>
             <span>Time Trial 2</span>
             <span className='-flex'>
-              <input type='number' name='distances[]' defaultValue={distances[1].toMeters()} placeholder={'5000'} width='40%' />
-              <DurationInputField name='times[]' defaultValue={times[1]} />
+              <input type='number' name={INPUT_DISTANCES} defaultValue={distances[1].toMeters()} placeholder={'5000'} width='40%' />
+              <DurationInputField name={INPUT_TIMES} defaultValue={times[1]} />
             </span>
           </label>
         </section>
