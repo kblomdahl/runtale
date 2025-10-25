@@ -4,20 +4,29 @@ import Zones from '../features/zones/Zones';
 import Sessions from '../features/sessions/Sessions';
 import Strength from '../features/strength/Strength';
 import NorwegianSingles from '../features/norwegian-singles/NorwegianSingles';
-import Router, { Route } from 'preact-router';
+import { useEffect, useState } from 'preact/hooks';
 import './App.css'
 
 function App() {
+  const [route, setRoute] = useState(window.location.hash.slice(1) || '/');
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setRoute(window.location.hash.slice(1) || '/');
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
   return (
     <div>
       <Header />
-      <Router>
-        <Route path="/" component={Paces} />
-        <Route path="/zones" component={Zones} />
-        <Route path="/sessions" component={Sessions} />
-        <Route path="/norwegian-singles" component={NorwegianSingles} />
-        <Route path="/strength" component={Strength} />
-      </Router>
+      {route === '/' && <Paces />}
+      {route === '/zones' && <Zones />}
+      {route === '/sessions' && <Sessions />}
+      {route === '/norwegian-singles' && <NorwegianSingles />}
+      {route === '/strength' && <Strength />}
     </div>
   );
 }
