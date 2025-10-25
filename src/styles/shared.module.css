@@ -1,110 +1,122 @@
-/**
- * Shared Utilities Module
- * Reusable utility classes for common patterns across components
- */
-
-/* Layout utilities */
-.responsiveContainer {
+.layout__responsive {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-sm) var(--spacing-lg);
 }
 
-.flex {
+.layout__cluster {
   display: flex;
   gap: var(--spacing-xs);
 }
 
-.inlineBlock {
-  display: inline-block;
-}
-
-.widthFull {
+.layout__full {
   width: 100%;
 }
 
-/* Form utilities */
-.alignedForm {
+.form {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
   width: var(--form-width);
 }
 
-.alignedForm label {
+.form label {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
-.inlineForm input {
+.form__inline input {
   margin: 0 var(--spacing-xs);
 }
 
-.inlineForm button {
+.form__inline button {
   height: var(--button-height-inline);
 }
 
-.durationInput {
+.input__duration {
   text-align: right;
   width: var(--input-width-duration);
 }
 
-/* Table utilities */
-.inlineTable {
+.table--inline {
   display: inline-table;
   margin: 0;
 }
 
-.inlineTable tr {
+.table--inline tr {
   border: none;
 }
 
-.inlineTable tbody tr:hover {
+.table--inline tbody tr:hover {
   background-color: transparent;
 }
 
-.inlineTable :global(td.left) {
-  padding-left: var(--spacing-xs);
+.table__cell {
+  text-align: center;
 }
 
-/* Table cell alignment */
-.left {
+.table__cellLabel {
   text-align: left;
   padding-left: var(--spacing-sm);
 }
 
-.center {
-  text-align: center;
-}
-
-.right {
+.table__cellValue {
   text-align: right;
 }
 
-/* Table column sizing */
-.wide {
-  width: var(--table-column-width-wide);
-}
-
-.narrow {
-  width: var(--table-column-width-narrow);
-}
-
-/* Text modifiers */
-.bold {
-  font-weight: var(--font-weight-bold);
-}
-
-.fade {
+.table__cellSummary {
+  text-align: center;
+  font-size: var(--font-size-small);
   opacity: var(--opacity-fade);
 }
 
-.small {
+.table__cellTotal {
+  font-size: var(--font-size-small);
+  opacity: var(--opacity-fade);
+}
+
+.table__cellDetail {
+  text-align: center;
   font-size: var(--font-size-small);
 }
 
-/* Row modifiers */
-.highlight {
+.table__headerCenter {
+  text-align: center;
+}
+
+.table__headerLabel {
+  text-align: left;
+  padding-left: var(--spacing-sm);
+}
+
+.table__colWide {
+  width: var(--table-column-width-wide);
+}
+
+.table__colNarrow {
+  width: var(--table-column-width-narrow);
+}
+
+.table__row--highlight {
+  font-weight: var(--font-weight-bold);
+  animation: flash 3s ease-out;
+}
+
+.text__heading {
+  font-weight: var(--font-weight-bold);
+}
+
+.text__label {
+  font-weight: var(--font-weight-bold);
+}
+
+.text__secondary {
+  opacity: var(--opacity-fade);
+}
+
+.text__breakpoint {
+  text-align: center;
   font-weight: var(--font-weight-bold);
   animation: flash 3s ease-out;
 }

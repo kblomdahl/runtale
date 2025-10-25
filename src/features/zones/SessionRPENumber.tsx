@@ -35,7 +35,7 @@ function SessionRPENumber() {
             </tr>
             { breakpoint && (
               <tr key={breakpoint}>
-                <td colSpan={2} className={`${styles.center} ${styles.bold}`}>{breakpoint}</td>
+                <td colSpan={2} className={styles.text__breakpoint}>{breakpoint}</td>
               </tr>
             )}
           </Fragment>;

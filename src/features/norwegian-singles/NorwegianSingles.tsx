@@ -63,9 +63,9 @@ function NorwegianSingles() {
   };
 
   return <>
-    <form onSubmit={setTrainingParameters} className={styles.inlineBlock}>
-      <div className={styles.responsiveContainer}>
-        <section className={styles.alignedForm}>
+    <form onSubmit={setTrainingParameters}>
+      <div className={styles.layout__responsive}>
+        <section className={styles.form}>
           <b>
             Training Plan Parameters
           </b>
@@ -90,26 +90,26 @@ function NorwegianSingles() {
             </select>
           </label>
         </section>
-        <section className={styles.alignedForm}>
+        <section className={styles.form}>
           <b>
             Critical Speed from Time Trials
           </b>
           <label>
             <span>Time Trial 1</span>
-            <span className={styles.flex}>
+            <span className={styles.layout__cluster}>
               <input type='number' name={INPUT_DISTANCES} defaultValue={distances[0].toMeters()} placeholder={'1609.34'} width='40%' />
               <DurationInputField name={INPUT_TIMES} defaultValue={times[0]} />
             </span>
           </label>
           <label>
             <span>Time Trial 2</span>
-            <span className={styles.flex}>
+            <span className={styles.layout__cluster}>
               <input type='number' name={INPUT_DISTANCES} defaultValue={distances[1].toMeters()} placeholder={'5000'} width='40%' />
               <DurationInputField name={INPUT_TIMES} defaultValue={times[1]} />
             </span>
           </label>
         </section>
-        <button type='submit' className={styles.widthFull}>Plan</button>
+        <button type='submit' className={styles.layout__full}>Plan</button>
       </div>
     </form>
     <hr />

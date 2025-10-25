@@ -19,7 +19,6 @@ body {
   min-height: 100vh;
 }
 
-/* Header */
 header {
   display: flex;
   justify-content: space-between;
@@ -36,25 +35,19 @@ header nav ul {
   margin: 0;
 }
 
-/* Base element spacing */
-form,
-p,
-table {
+form, p, table {
   margin: var(--spacing-sm) var(--spacing-sm);
 }
 
-/* Horizontal rule */
 hr {
   margin: var(--spacing-md) 0;
   border: dashed 1px var(--color-border-hr);
 }
 
-/* Base input styling */
 input[type="number"] {
   width: var(--input-width-number);
 }
 
-/* Base table styling */
 table {
   border-collapse: collapse;
 }
@@ -76,15 +69,8 @@ tbody tr:hover {
   background-color: var(--color-hover-bg);
 }
 
-/* Flash animation for highlighted rows */
 @keyframes flash {
-  0% {
-    background-color: unset;
-  }
-  25% {
-    background-color: var(--color-hover-bg);
-  }
-  100% {
-    background-color: unset;
-  }
+  0%   { background-color: unset; }
+  25%  { background-color: var(--color-hover-bg); }
+  100% { background-color: unset; }
 }

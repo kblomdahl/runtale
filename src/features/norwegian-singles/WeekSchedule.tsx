@@ -69,20 +69,20 @@ class EasyDay extends WeekDay {
     if (this.duration.toHours() >= 1) {
       const doublesDuration = this.duration.divide(2);
 
-      return <table className={styles.inlineTable}>
+      return <table className={styles.table__inline}>
         <thead>
           <tr>
-            <th className={styles.center} colSpan={2}>Doubles</th>
+            <th className={styles.table__headerCenter} colSpan={2}>Doubles</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td className={styles.fade}>{doublesDuration.format()}</td>
-            <td className={styles.left}>Morning</td>
+            <td className={styles.text__secondary}>{doublesDuration.format()}</td>
+            <td className={styles.table__cellLabel}>Morning</td>
           </tr>
           <tr>
-            <td className={styles.fade}>{doublesDuration.format()}</td>
-            <td className={styles.left}>Evening</td>
+            <td className={styles.text__secondary}>{doublesDuration.format()}</td>
+            <td className={styles.table__cellLabel}>Evening</td>
           </tr>
         </tbody>
       </table>;
@@ -112,19 +112,19 @@ class QualityDay extends WeekDay {
   get description() {
     const qualityDuration = this.duration.subtract(WARM_UP_DOWN_DURATION);
 
-    return <table className={styles.inlineTable}>
+    return <table className={styles['table--inline']}>
       <tbody>
         <tr>
-          <td className={styles.fade}>{WARM_UP_DURATION.format()}</td>
-          <td className={styles.left}>Warm up</td>
+          <td className={styles.text__secondary}>{WARM_UP_DURATION.format()}</td>
+          <td className={styles.table__cellLabel}>Warm up</td>
         </tr>
         <tr>
-          <td className={styles.fade}>{qualityDuration.format()}</td>
-          <td className={styles.left}>{Math.round(this.repetitions)} &times; {this.session.name}</td>
+          <td className={styles.text__secondary}>{qualityDuration.format()}</td>
+          <td className={styles.table__cellLabel}>{Math.round(this.repetitions)} &times; {this.session.name}</td>
         </tr>
         <tr>
-          <td className={styles.fade}>{WARM_DOWN_DURATION.format()}</td>
-          <td className={styles.left}>Warm down</td>
+          <td className={styles.text__secondary}>{WARM_DOWN_DURATION.format()}</td>
+          <td className={styles.table__cellLabel}>Warm down</td>
         </tr>
       </tbody>
     </table>;
@@ -236,53 +236,53 @@ export default function WeekSchedule({
         <tr>
           <th>&nbsp;</th>
           {WEEKDAYS.map(day => {
-            return <th key={day} className={styles.center}>{day}</th>
+            return <th key={day} className={styles.table__headerCenter}>{day}</th>
           })}
-          <th className={styles.narrow}>Total</th>
+          <th className={styles.table__colNarrow}>Total</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>Type</td>
-          {weekDays.map((day) => <td key={day.name} className={styles.center}>{day.type}</td>)}
+          {weekDays.map((day) => <td key={day.name} className={styles.table__cell}>{day.type}</td>)}
         </tr>
         <tr>
           <td>TSS</td>
           {weekDays.map((day) => (
-            <td key={day.name} className={`${styles.center} ${styles.small} ${styles.fade}`}>
+            <td key={day.name} className={styles.table__cellSummary}>
               {day.tss > 0 && Math.round(day.tss)}
             </td>
           ))}
-          <td className={`${styles.small} ${styles.fade} ${styles.narrow}`}>
+          <td className={`${styles.table__cellTotal} ${styles.table__colNarrow}`}>
             {Math.round(weekDays.reduce((sum, day) => sum + day.tss, 0))}
           </td>
         </tr>
         <tr>
           <td>Duration</td>
           {weekDays.map((day) => (
-            <td key={day.name} className={`${styles.center} ${styles.small} ${styles.fade}`}>
+            <td key={day.name} className={styles.table__cellSummary}>
               {day.duration.toSeconds() > 0 && day.duration.format()}
             </td>
           ))}
-          <td className={`${styles.small} ${styles.fade} ${styles.narrow}`}>
+          <td className={`${styles.table__cellTotal} ${styles.table__colNarrow}`}>
             {weekDays.reduce((sum, day) => sum.add(day.duration), Duration.fromSeconds(0)).format()}
           </td>
         </tr>
         <tr>
           <td>Distance</td>
           {weekDays.map((day) => (
-            <td key={day.name} className={`${styles.center} ${styles.small} ${styles.fade}`}>
+            <td key={day.name} className={styles.table__cellSummary}>
               {day.distance.toMeters() > 0 && <> {day.distance.format()} km</>}
             </td>
           ))}
-          <td className={`${styles.small} ${styles.fade} ${styles.narrow}`}>
+          <td className={`${styles.table__cellTotal} ${styles.table__colNarrow}`}>
             {weekDays.reduce((sum, day) => sum.add(day.distance), Distance.fromMeters(0)).format()} km
           </td>
         </tr>
         <tr>
           <td>Description</td>
           {weekDays.map((day) => (
-            <td key={day.name} className={`${styles.center} ${styles.small}`}>
+            <td key={day.name} className={styles.table__cellDetail}>
               {day.description}
             </td>
           ))}

@@ -53,7 +53,7 @@ function PaceTable() {
     <p>
       This table shows the time it would take to run a certain distance at a certain pace.
     </p>
-    <form onSubmit={addPace} className={styles.inlineForm}>
+    <form onSubmit={addPace} className={styles.form__inline}>
       <label>
           <span>Pace</span>
           <DurationInputField name={INPUT_PACE} defaultValue={Duration.fromMinutes(4)} />
@@ -76,7 +76,7 @@ function PaceTable() {
       <tbody>
         {
           paces.map(pace => {
-            return <tr key={pace} className={customPaces.has(pace) ? styles.highlight : ''}>
+            return <tr key={pace} className={customPaces.has(pace) ? styles['table__row--highlight'] : ''}>
               <td>{formatSeconds(pace)}</td>
               <td>{formatDecimals(SECONDS_PER_HOUR / pace)}</td>
               <td>{formatSeconds(pace * DISTANCE_1_MILE_KM)}</td>
