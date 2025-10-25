@@ -34,11 +34,6 @@
   height: var(--button-height-inline);
 }
 
-.input__duration {
-  text-align: right;
-  width: var(--input-width-duration);
-}
-
 .table--inline {
   display: inline-table;
   margin: 0;
