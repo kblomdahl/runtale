@@ -88,9 +88,3 @@
 .text__secondary {
   opacity: var(--opacity-fade);
 }
-
-.text__breakpoint {
-  text-align: center;
-  font-weight: var(--font-weight-bold);
-  animation: flash 3s ease-out;
-}
