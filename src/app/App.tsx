@@ -19,14 +19,14 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <>
       <Header />
       {route === '/' && <Paces />}
       {route === '/zones' && <Zones />}
       {route === '/sessions' && <Sessions />}
       {route === '/norwegian-singles' && <NorwegianSingles />}
       {route === '/strength' && <Strength />}
-    </div>
+    </>
   );
 }
 
