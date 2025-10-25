@@ -1,3 +1,7 @@
+.form {
+  margin: var(--spacing-sm);
+}
+
 .form input {
   margin: 0 var(--spacing-xs);
 }
