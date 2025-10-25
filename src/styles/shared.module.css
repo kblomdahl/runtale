@@ -26,14 +26,6 @@
   align-items: center;
 }
 
-.form__inline input {
-  margin: 0 var(--spacing-xs);
-}
-
-.form__inline button {
-  height: var(--button-height-inline);
-}
-
 .table--inline {
   display: inline-table;
   margin: 0;
@@ -91,19 +83,6 @@
 
 .table__colNarrow {
   width: var(--table-column-width-narrow);
-}
-
-.table__row--highlight {
-  font-weight: var(--font-weight-bold);
-  animation: flash 3s ease-out;
-}
-
-.text__heading {
-  font-weight: var(--font-weight-bold);
-}
-
-.text__label {
-  font-weight: var(--font-weight-bold);
 }
 
 .text__secondary {

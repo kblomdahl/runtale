@@ -2,7 +2,7 @@ import { useState } from 'preact/hooks';
 import DurationInputField from '../../components/DurationInputField';
 import Duration from '../../utils/Duration';
 import { getNumberFromForm } from '../../utils/Form';
-import styles from '../../styles/shared.module.css';
+import styles from './PaceTable.module.css';
 
 const INPUT_PACE = 'pace';
 
@@ -53,7 +53,7 @@ function PaceTable() {
     <p>
       This table shows the time it would take to run a certain distance at a certain pace.
     </p>
-    <form onSubmit={addPace} className={styles.form__inline}>
+    <form onSubmit={addPace} className={styles.form}>
       <label>
           <span>Pace</span>
           <DurationInputField name={INPUT_PACE} defaultValue={Duration.fromMinutes(4)} />
@@ -76,7 +76,7 @@ function PaceTable() {
       <tbody>
         {
           paces.map(pace => {
-            return <tr key={pace} className={customPaces.has(pace) ? styles['table__row--highlight'] : ''}>
+            return <tr key={pace} className={customPaces.has(pace) ? styles['row--highlight'] : ''}>
               <td>{formatSeconds(pace)}</td>
               <td>{formatDecimals(SECONDS_PER_HOUR / pace)}</td>
               <td>{formatSeconds(pace * DISTANCE_1_MILE_KM)}</td>

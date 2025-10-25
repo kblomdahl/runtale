@@ -1,0 +1,12 @@
+.form input {
+  margin: 0 var(--spacing-xs);
+}
+
+.form button {
+  height: var(--button-height-inline);
+}
+
+.row--highlight {
+  font-weight: var(--font-weight-bold);
+  animation: flash 3s ease-out;
+}
