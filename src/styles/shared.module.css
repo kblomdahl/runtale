@@ -88,3 +88,7 @@
 .text__secondary {
   opacity: var(--opacity-fade);
 }
+
+.text__heading {
+  font-weight: var(--font-weight-bold);
+}
