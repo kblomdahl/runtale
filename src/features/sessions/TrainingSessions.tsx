@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "preact";
 
 const ANAEROBIC_SESSIONS = [
   {
@@ -53,7 +53,7 @@ function TrainingSessions() {
   ];
 
   return <>
-    {session_types.map(({ name, sessions }, index) => <React.Fragment key={name}>
+    {session_types.map(({ name, sessions }, index) => <Fragment key={name}>
         {index > 0 && <hr />}
         <p className="-bold">
           {name}
@@ -61,7 +61,7 @@ function TrainingSessions() {
         {sessions.map(session => (
           <TrainingSession {...session} key={session.name} />
         ))}
-      </React.Fragment>
+      </Fragment>
     )}
   </>;
 }

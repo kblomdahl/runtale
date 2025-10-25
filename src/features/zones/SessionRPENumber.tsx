@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "preact";
 
 const RPE_TABLE = [
   { rpe: 1, intensity: 'Very Easy' },
@@ -27,7 +27,7 @@ function SessionRPENumber() {
       </thead>
       <tbody>
         {RPE_TABLE.map(({ rpe, intensity, breakpoint }) => {
-          return <React.Fragment key={rpe}>
+          return <Fragment key={rpe}>
             <tr>
               <td>{rpe}</td>
               <td>{intensity}</td>
@@ -37,7 +37,7 @@ function SessionRPENumber() {
                 <td colSpan={2} className="-center -bold">{breakpoint}</td>
               </tr>
             )}
-          </React.Fragment>;
+          </Fragment>;
         })}
       </tbody>
     </table>
