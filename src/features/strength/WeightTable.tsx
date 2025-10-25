@@ -89,7 +89,7 @@ function WeightTableBody({ oneRepMax }: WeightTableBodyProps) {
         const pct = array[index + reserve]?.pct;
 
         return <Fragment key={rpe}>
-          <td className={styles.text__secondary}>{pct && `${Math.round(pct * 100).toString()}%`}</td>
+          <td className={sharedStyles.text__secondary}>{pct && `${Math.round(pct * 100).toString()}%`}</td>
           <td>{pct && Math.round(oneRepMax * pct)}</td>
         </Fragment>;
       })}
