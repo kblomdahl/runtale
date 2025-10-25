@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import type { JSX } from "preact";
 import HeartZones from "./HeartZones";
 import LactateZones from "./LactateZones";
 import SessionRPENumber from './SessionRPENumber';
@@ -13,7 +13,7 @@ function Zones() {
   const [maximum, setMaximum] = useLocalStorage('Zones/maximum', DEFAULT_MAXIMUM);
   const [lactateThreshold, setLactateThreshold] = useLocalStorage('Zones/lactateThreshold', DEFAULT_LACTATE_THRESHOLD);
 
-  const updateZoneValues = (e: FormEvent<HTMLFormElement>) => {
+  const updateZoneValues = (e: JSX.TargetedEvent<HTMLFormElement>) => {
     const form = e.target as HTMLFormElement;
     setResting((form.resting as HTMLInputElement).valueAsNumber);
     setMaximum((form.maximum as HTMLInputElement).valueAsNumber);

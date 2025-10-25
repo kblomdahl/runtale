@@ -1,4 +1,5 @@
-import { FormEvent, useMemo } from 'react';
+import { useMemo } from 'preact/hooks';
+import type { JSX } from 'preact';
 
 import Distance from '../../utils/Distance';
 import Duration from '../../utils/Duration';
@@ -37,7 +38,7 @@ function NorwegianSingles() {
     return scheduleQualityDays(days);
   }, [restingDays, longRunDay]);
 
-  const setTrainingParameters = (e: FormEvent<HTMLFormElement>) => {
+  const setTrainingParameters = (e: JSX.TargetedEvent<HTMLFormElement>) => {
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     const targetTrainingLoad = (form.targetTrainingLoad as HTMLInputElement).valueAsNumber;
@@ -77,9 +78,9 @@ function NorwegianSingles() {
           </label>
           <label>
             <span>Resting Days</span>
-            <select name='restingDays' multiple defaultValue={DEFAULT_RESTING_DAYS.map(day => day.toString())}>
+            <select name='restingDays' multiple>
               {WEEKDAYS.map((day, index) => (
-                <option key={day} value={index}>{day}</option>
+                <option key={day} value={index} selected={DEFAULT_RESTING_DAYS.includes(index)}>{day}</option>
               ))}
             </select>
           </label>

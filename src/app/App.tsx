@@ -4,20 +4,22 @@ import Zones from '../features/zones/Zones';
 import Sessions from '../features/sessions/Sessions';
 import Strength from '../features/strength/Strength';
 import NorwegianSingles from '../features/norwegian-singles/NorwegianSingles';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Router, { Route } from 'preact-router';
 import './App.css'
 
 function App() {
-  return <BrowserRouter basename={import.meta.env.BASE_URL}>
-    <Header />
-    <Routes>
-      <Route path="/" element={<Paces />} />
-      <Route path="/zones" element={<Zones />} />
-      <Route path="/sessions" element={<Sessions />} />
-      <Route path="/norwegian-singles" element={<NorwegianSingles />} />
-      <Route path="/strength" element={<Strength />} />
-    </Routes>
-  </BrowserRouter>;
+  return (
+    <div>
+      <Header />
+      <Router>
+        <Route path="/" component={Paces} />
+        <Route path="/zones" component={Zones} />
+        <Route path="/sessions" component={Sessions} />
+        <Route path="/norwegian-singles" component={NorwegianSingles} />
+        <Route path="/strength" component={Strength} />
+      </Router>
+    </div>
+  );
 }
 
 export default App;

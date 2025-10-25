@@ -1,4 +1,5 @@
-import { useState, FormEvent } from 'react';
+import { useState } from 'preact/hooks';
+import type { JSX } from 'preact';
 import DurationInputField from '../../components/DurationInputField';
 import Duration from '../../utils/Duration';
 
@@ -34,7 +35,7 @@ function formatDecimals(x: number) {
 function PaceTable() {
   const [paces, setPaces] = useState(DEFAULT_PACES);
   const [customPaces, setCustomPaces] = useState(new Set());
-  const addPace = (e: FormEvent<HTMLFormElement>) => {
+  const addPace = (e: JSX.TargetedEvent<HTMLFormElement>) => {
     const form = e.target as HTMLFormElement;
     const newPace = +(form.pace as HTMLInputElement).value;
     const newPaces = [...new Set([...paces, newPace])];

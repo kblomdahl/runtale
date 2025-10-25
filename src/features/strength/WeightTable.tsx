@@ -1,4 +1,6 @@
-import { Fragment, FormEvent, useMemo } from "react";
+import { Fragment } from "preact";
+import { useMemo } from "preact/hooks";
+import type { JSX } from "preact";
 import { RPE_TABLE } from './RPETable';
 import useLocalStorage from "../../utils/UseLocalStorage";
 
@@ -94,7 +96,7 @@ function WeightTable() {
   const [reps, setReps] = useLocalStorage('WeightTable/reps', DEFAULT_REPS);
   const [rpe, setRpe] = useLocalStorage('WeightTable/rpe', DEFAULT_RPE);
   const oneRepMax = useMemo(() => calculateOneRepMax(weight, reps, rpe), [weight, reps, rpe]);
-  const updateRepRPEValues = (e: FormEvent<HTMLFormElement>) => {
+  const updateRepRPEValues = (e: JSX.TargetedEvent<HTMLFormElement>) => {
     const form = e.target as HTMLFormElement;
     const weight = (form.weight as HTMLInputElement).valueAsNumber;
     const reps = (form.reps as HTMLInputElement).valueAsNumber;
