@@ -36,7 +36,7 @@ header nav ul {
 }
 
 form, p, table {
-  margin: var(--spacing-sm) var(--spacing-sm);
+  margin: var(--spacing-sm);
 }
 
 hr {
