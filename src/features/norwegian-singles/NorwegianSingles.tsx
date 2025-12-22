@@ -39,7 +39,7 @@ function NorwegianSingles() {
   const [targetTssVolume, setTargetVolume] = useLocalStorage<number>('NorwegianSingles/targetTssVolume', DEFAULT_TARGET_VOLUME);
   const [longRunDay, setLongRunDay] = useLocalStorage<number>('NorwegianSingles/longRunDay', DEFAULT_LONG_RUN_DAY);
   const [restingDays, setRestingDays] = useLocalStorage<number[]>('NorwegianSingles/restingDays', DEFAULT_RESTING_DAYS);
-  const [maxQualityDays, setMaxQualityDays] = useLocalStorage<number>('NorwegianSingles/maxQualityDays', 4);
+  const [maxQualityDays, setMaxQualityDays] = useLocalStorage<number>('NorwegianSingles/maxQualityDays', DEFAULT_MAX_QUALITY_DAYS);
   const criticalSpeed = useMemo(() => CriticalSpeed.fromRaces(distances, times), [distances, times]);
   const qualityDays = useMemo(() => {
     const days = WEEKDAYS
