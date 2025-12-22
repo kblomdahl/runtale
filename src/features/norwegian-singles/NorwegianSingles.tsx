@@ -18,10 +18,12 @@ const INPUT_LONG_RUN_DAY = 'longRunDay';
 const INPUT_RESTING_DAYS = 'restingDays';
 const INPUT_DISTANCES = 'distances[]';
 const INPUT_TIMES = 'times[]';
+const INPUT_MAX_QUALITY_DAYS = 'maxQualityDays';
 
 const DEFAULT_TARGET_VOLUME = 350;
 const DEFAULT_LONG_RUN_DAY = 6; // Sunday
 const DEFAULT_RESTING_DAYS = [0]; // Monday
+const DEFAULT_MAX_QUALITY_DAYS = 3;
 const DEFAULT_TT_DISTANCES: [Distance, Distance] = [
   Distance.fromMeters(1609.34),
   Distance.fromMeters(5000)
@@ -37,14 +39,15 @@ function NorwegianSingles() {
   const [targetTssVolume, setTargetVolume] = useLocalStorage<number>('NorwegianSingles/targetTssVolume', DEFAULT_TARGET_VOLUME);
   const [longRunDay, setLongRunDay] = useLocalStorage<number>('NorwegianSingles/longRunDay', DEFAULT_LONG_RUN_DAY);
   const [restingDays, setRestingDays] = useLocalStorage<number[]>('NorwegianSingles/restingDays', DEFAULT_RESTING_DAYS);
+  const [maxQualityDays, setMaxQualityDays] = useLocalStorage<number>('NorwegianSingles/maxQualityDays', 4);
   const criticalSpeed = useMemo(() => CriticalSpeed.fromRaces(distances, times), [distances, times]);
   const qualityDays = useMemo(() => {
     const days = WEEKDAYS
       .map((_, index) => index)
       .filter(day => !restingDays.includes(day) && day !== longRunDay);
 
-    return scheduleQualityDays(days);
-  }, [restingDays, longRunDay]);
+    return scheduleQualityDays(days, maxQualityDays);
+  }, [restingDays, longRunDay, maxQualityDays]);
 
   const setTrainingParameters = (e: SubmitEvent) => {
     e.preventDefault();
@@ -53,9 +56,11 @@ function NorwegianSingles() {
     const targetTrainingLoad = getNumberFromForm(formData, INPUT_TARGET_TRAINING_LOAD);
     const longRunDay = getNumberFromForm(formData, INPUT_LONG_RUN_DAY);
     const restingDays = getNumbersFromForm(formData, INPUT_RESTING_DAYS);
+    const maxQualityDays = getNumberFromForm(formData, INPUT_MAX_QUALITY_DAYS);
     const distances = getNumbersFromForm(formData, INPUT_DISTANCES).map(value => Distance.fromMeters(value)) as [Distance, Distance];
     const times = getNumbersFromForm(formData, INPUT_TIMES).map(value => Duration.fromSeconds(value)) as [Duration, Duration];
 
+    setMaxQualityDays(maxQualityDays);
     setTargetVolume(targetTrainingLoad);
     setLongRunDay(longRunDay);
     setRestingDays(restingDays);
@@ -73,6 +78,10 @@ function NorwegianSingles() {
           <label>
             <span>Target Training Load (ATL)</span>
             <input type='number' name={INPUT_TARGET_TRAINING_LOAD} defaultValue={DEFAULT_TARGET_VOLUME} />
+          </label>
+          <label>
+            <span>Quality Days</span>
+            <input type='number' name={INPUT_MAX_QUALITY_DAYS} defaultValue={DEFAULT_MAX_QUALITY_DAYS} min={1} max={3} />
           </label>
           <label>
             <span>Long Run Day</span>
