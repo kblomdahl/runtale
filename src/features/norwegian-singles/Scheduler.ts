@@ -94,11 +94,11 @@ function search(
   return undefined;
 }
 
-export function scheduleQualityDays(days: number[]) {
+export function scheduleQualityDays(days: number[], maxQualityDays: number) {
   const candidateDays = days.map(day => new DecisionVariable(day, [EASY, QUALITY]));
 
   // maximize: the number of quality days
-  for (let minQualityDays = 4; minQualityDays > 1; --minQualityDays) {
+  for (let minQualityDays = maxQualityDays; minQualityDays >= 1; --minQualityDays) {
     const result = search(candidateDays, minQualityDays);
 
     if (result !== undefined) {
